@@ -36,6 +36,7 @@ class Character(Base):
     hitpoints_curr = Column(Integer, default=20)
     stability_max = Column(Integer, default=80)
     stability_curr = Column(Integer, default=80)
+    speed = Column(Integer, default=60)
 
     def get_modifier(self, value):
         modifiers = {
@@ -178,6 +179,19 @@ def get_character_created_at(created_at, guild):
 
     result = session.query(Character).filter_by(created_at=created_at, guild_id=guild).first()
     return result
+
+
+def get_characters_in_guild(guild, incl_npc = False):
+    session = scoped_session(sessionmaker(bind=engine))
+
+    result = session.query(Character).filter_by(guild_id=guild).all()
+
+    if incl_npc:
+        return result
+    else:
+        result = [x for x in result if x.owner_id != "NPC"]
+        # result = list(filter((x for x in result if x.owner_id != "NPC"), result))
+        return result
 
 
 def get_skills_for_character(character_id):

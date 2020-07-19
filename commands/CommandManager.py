@@ -88,6 +88,9 @@ async def process_command(bot, message):
     elif command == "check":
         from commands.check import perform_skill_check
         await perform_skill_check(message)
+    elif command == "initiative":
+        from commands.initiative import do_initiative
+        await do_initiative(message)
     elif command == "help":
         await send_help(bot, message)
     elif command == "clean":

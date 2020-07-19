@@ -37,13 +37,23 @@ async def create_character(source_message, owner, guild, name):
 async def create_npc(source_message, guild, name):
     create_at = str(int(time.time() * 1000))
 
+    ##Sort out the slug
+    def_slug = name.split(" ")[0].lower()
+    slug = def_slug
+    iter = 1
+
+    while get_character_for_slug(slug, guild) != None:
+        slug = def_slug + "_" + str(iter)
+        iter += 1
+
     char = Character(
         character_name=name,
         created_at=create_at,
+        character_slug=slug,
         owner_id="NPC",
         guild_id=guild
     )
 
-    add_character_to_db(char)
+    add_character_to_db(char, False)
 
     await print_character_created_at(source_message.channel, create_at)

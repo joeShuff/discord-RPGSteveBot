@@ -75,7 +75,7 @@
         {
             "command": "<pref>set",
             "name": "set",
-            "display_name": "set",
+            "display_name": "Set",
             "syntax": "<pref>set <skill> <value>",
             "example": "<pref>set dex 70",
             "description": "Sets your characters values to a new value",
@@ -107,10 +107,10 @@
             "command": "<pref>check",
             "name": "check",
             "display_name": "Checks",
-            "syntax": "<pref>check <skillname>",
-            "example": "<pref>check sword",
+            "syntax": "<pref>check <skillname> <advantage | disadvantage>",
+            "example": "<pref>check sword a",
             "description": "Use this command to perform a check against a specific skill. All modifiers will be applied",
-            "long_description": "",
+            "long_description": "Append an `a` or `d` to the end of your command to add advantage or disadvantage to your roll.",
             "parameters": [
                 {
                     "name": "value",
@@ -118,6 +118,17 @@
                     "values": []
                 }
             ],
+            "category": "gameplay"
+        },
+        {
+            "command": "<pref>initiative",
+            "name": "initiative",
+            "display_name": "Initiative",
+            "syntax": "<pref>init",
+            "example": "<pref>init",
+            "description": "This command is only for Game Masters. It rolls initative rolls for every player and NPC in your guild.",
+            "long_description": "",
+            "parameters": [],
             "category": "gameplay"
         },
         {
