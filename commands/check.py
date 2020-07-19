@@ -90,6 +90,7 @@ async def skill_check_for_character(message, character, skill_search, adv=False,
     embed = discord.Embed(title=character.character_name + "'s " + chosen_stat_name + " Check",
                           color=0x00ff00)
 
+    dice_url = ""
     if len(character.character_image) > 0:
         embed.set_thumbnail(url=character.character_image)
 
