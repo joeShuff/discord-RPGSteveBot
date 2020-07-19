@@ -1,0 +1,234 @@
+[
+    {
+        "name": "Alchemy",
+        "default_value": 25,
+        "modifier": "EDU",
+        "synonyms": [
+            "alch"
+        ]
+    },
+    {
+        "name": "Appraise",
+        "default_value": 15,
+        "modifier": "EDU",
+        "synonyms": [
+            "appr"
+        ]
+    },
+    {
+        "name": "Archaeology",
+        "default_value": 20,
+        "modifier": "EDU",
+        "synonyms": [
+            "arch"
+        ]
+    },
+    {
+        "name": "Bestiary",
+        "default_value": 25,
+        "modifier": "POW",
+        "synonyms": [
+            "best"
+        ]
+    },
+    {
+        "name": "Charm",
+        "default_value": 15,
+        "modifier": "APP",
+        "synonyms": [
+            "char"
+        ]
+    },
+    {
+        "name": "Crafting",
+        "default_value": 25,
+        "modifier": "EDU",
+        "synonyms": [
+            "cra"
+        ]
+    },
+    {
+        "name": "Detective",
+        "default_value": 15,
+        "modifier": "INT",
+        "synonyms": [
+            "det"
+        ]
+    },
+    {
+        "name": "Disguise",
+        "default_value": 15,
+        "modifier": "NON",
+        "synonyms": [
+            "disg"
+        ]
+    },
+    {
+        "name": "Dodge",
+        "default_value": 35,
+        "modifier": "DEX",
+        "synonyms": [
+            "dod"
+        ]
+    },
+    {
+        "name": "Forgery",
+        "default_value": 5,
+        "modifier": "NON",
+        "synonyms": [
+            "forg"
+        ]
+    },
+    {
+        "name": "Geology",
+        "default_value": 10,
+        "modifier": "INT",
+        "synonyms": [
+            "geo"
+        ]
+    },
+    {
+        "name": "Intimidate",
+        "default_value": 15,
+        "modifier": "SIZ",
+        "synonyms": [
+            "intim"
+        ]
+    },
+    {
+        "name": "Language",
+        "default_value": 5,
+        "modifier": "INT",
+        "synonyms": [
+            "lan"
+        ]
+    },
+    {
+        "name": "Library Use",
+        "default_value": 5,
+        "modifier": "INT",
+        "synonyms": [
+            "lib"
+        ]
+    },
+    {
+        "name": "Locksmith",
+        "default_value": 10,
+        "modifier": "INT",
+        "synonyms": [
+            "lock"
+        ]
+    },
+    {
+        "name": "Mythology",
+        "default_value": 5,
+        "modifier": "EDU",
+        "synonyms": [
+            "myth"
+        ]
+    },
+    {
+        "name": "Navigate",
+        "default_value": 35,
+        "modifier": "EDU",
+        "synonyms": [
+            "nav"
+        ]
+    },
+    {
+        "name": "Persuade",
+        "default_value": 20,
+        "modifier": "APP",
+        "synonyms": [
+            "pers"
+        ]
+    },
+    {
+        "name": "Redstone",
+        "default_value": 20,
+        "modifier": "INT",
+        "synonyms": [
+            "red"
+        ]
+    },
+    {
+        "name": "Science",
+        "default_value": 25,
+        "modifier": "INT",
+        "synonyms": [
+            "sci"
+        ]
+    },
+    {
+        "name": "Trickery",
+        "default_value": 10,
+        "modifier": "DEX",
+        "synonyms": [
+            "tri"
+        ]
+    },
+    {
+        "name": "Stealth",
+        "default_value": 10,
+        "modifier": "DEX",
+        "synonyms": [
+            "ste"
+        ]
+    },
+    {
+        "name": "Support",
+        "default_value": 35,
+        "modifier": "POW",
+        "synonyms": [
+            "supp"
+        ]
+    },
+    {
+        "name": "Axe",
+        "default_value": 25,
+        "modifier": "STR",
+        "synonyms": [
+
+        ]
+    },
+    {
+        "name": "Bow",
+        "default_value": 25,
+        "modifier": "DEX",
+        "synonyms": [
+
+        ]
+    },
+    {
+        "name": "Brawl",
+        "default_value": 20,
+        "modifier": "SIZ",
+        "synonyms": [
+            "bra"
+        ]
+    },
+    {
+        "name": "Crossbow",
+        "default_value": 25,
+        "modifier": "DEX",
+        "synonyms": [
+            "cro"
+        ]
+    },
+    {
+        "name": "Sword",
+        "default_value": 35,
+        "modifier": "STR",
+        "synonyms": [
+            "swo"
+        ]
+    },
+    {
+        "name": "Throw",
+        "default_value": 25,
+        "modifier": "DEX",
+        "synonyms": [
+            "thr"
+        ]
+    }
+]

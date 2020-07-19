@@ -1,0 +1,152 @@
+{
+    "categories": [
+        {
+            "name":"creation",
+            "display_name": ":moneybag: Creation",
+            "order": 0
+        },
+        {
+            "name": "character",
+            "display_name": "Character Commands",
+            "order": 1
+        },
+        {
+            "name": "help",
+            "display_name": ":question: Help",
+            "order": 3
+        },
+        {
+            "name": "gameplay",
+            "display_name": ":game_die: Gameplay",
+            "order": 2
+        }
+    ],
+    "commands":[
+        {
+            "command": "<pref>create",
+            "name": "create",
+            "display_name": "Create Character",
+            "syntax": "<pref>create <character name>",
+            "example": "<pref>create Persimmon LeMond",
+            "description": "Create a new character you will control!",
+            "long_description": "Only one character can be linked to a player. Game Masters can create NPCs.",
+            "parameters": [
+                {
+                    "name": "character name",
+                    "description": "The name you wish to give your character. Spaces supported.",
+                    "values": []
+                }
+            ],
+            "category": "creation"
+        },
+        {
+            "command": "<pref>me",
+            "name": "me",
+            "display_name": "Me",
+            "syntax": "<pref>me",
+            "example": "<pref>me",
+            "description": "Prints out your character info.",
+            "long_description": "",
+            "parameters": [],
+            "category": "character"
+        },
+        {
+            "command": "<pref>skill",
+            "name": "skill",
+            "display_name": "Skills",
+            "syntax": "<pref>skill <skillname> OR <pref>skill create <skillname> <value>",
+            "example": "<pref>skill dodge OR <pref>skill create sewing 35",
+            "description": "This command can be used to view skill information or create a new skill for your character",
+            "long_description": "",
+            "parameters": [
+                {
+                    "name": "skillname",
+                    "description": "The name of the skill to check",
+                    "values": []
+                },
+                {
+                    "name": "value",
+                    "description": "The value to set the skill to",
+                    "values": []
+                }
+            ],
+            "category": "character"
+        },
+        {
+            "command": "<pref>set",
+            "name": "set",
+            "display_name": "set",
+            "syntax": "<pref>set <skill> <value>",
+            "example": "<pref>set dex 70",
+            "description": "Sets your characters values to a new value",
+            "long_description": "",
+            "parameters": [
+                {
+                    "name": "skill",
+                    "description": "The skill to update the value of. For main skills you can use abbreviations",
+                    "values": [
+                        "dex",
+                        "str",
+                        "edu",
+                        "pow",
+                        "siz",
+                        "con",
+                        "int",
+                        "app"
+                    ]
+                },
+                {
+                    "name": "value",
+                    "description": "The value to set the skill to",
+                    "values": []
+                }
+            ],
+            "category": "character"
+        },
+        {
+            "command": "<pref>check",
+            "name": "check",
+            "display_name": "Checks",
+            "syntax": "<pref>check <skillname>",
+            "example": "<pref>check sword",
+            "description": "Use this command to perform a check against a specific skill. All modifiers will be applied",
+            "long_description": "",
+            "parameters": [
+                {
+                    "name": "value",
+                    "description": "The value to set the skill to",
+                    "values": []
+                }
+            ],
+            "category": "gameplay"
+        },
+        {
+            "command": "<pref>clean",
+            "name": "clean",
+            "display_name": "Clean",
+            "syntax": "<pref>clean",
+            "example": "<pref>clean",
+            "description": "Clean recent messages from the bot and commands to do with the bot.",
+            "long_description": "Searches the 50 most recent messages.",
+            "parameters": [],
+            "category": "help"
+        },
+        {
+            "command": "<pref>help",
+            "name": "help",
+            "display_name": "Help",
+            "syntax": "<pref>help <optional: command>",
+            "example": "<pref>help | <pref>help create",
+            "description": "View available commands to use with this bot and get help with specific commands",
+            "long_description": "",
+            "parameters": [
+                {
+                    "name": "command",
+                    "description": "The specific command to get help for, use the name of the command e.g. `check`",
+                    "values": []
+                }
+            ],
+            "category": "help"
+        }
+    ]
+}
