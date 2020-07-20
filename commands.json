@@ -11,14 +11,19 @@
             "order": 1
         },
         {
-            "name": "help",
-            "display_name": ":question: Help",
-            "order": 3
-        },
-        {
             "name": "gameplay",
             "display_name": ":game_die: Gameplay",
             "order": 2
+        },
+        {
+            "name": "gm_controls",
+            "display_name": ":fire: GM Controls :fire:",
+            "order": 3
+        },
+        {
+            "name": "help",
+            "display_name": ":question: Help",
+            "order": 4
         }
     ],
     "commands":[
@@ -130,6 +135,28 @@
             "long_description": "",
             "parameters": [],
             "category": "gameplay"
+        },
+        {
+            "command": "<pref>start",
+            "name": "start",
+            "display_name": "Start",
+            "syntax": "<pref>start",
+            "example": "<pref>start",
+            "description": "This command starts the game for this guild. Successful rolls are stored.",
+            "long_description": "",
+            "parameters": [],
+            "category": "gm_controls"
+        },
+        {
+            "command": "<pref>end",
+            "name": "end",
+            "display_name": "End",
+            "syntax": "<pref>end",
+            "example": "<pref>end",
+            "description": "This command ends the game for this guild. Successful rolls are no longer stored.",
+            "long_description": "",
+            "parameters": [],
+            "category": "gm_controls"
         },
         {
             "command": "<pref>clean",

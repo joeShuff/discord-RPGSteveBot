@@ -111,6 +111,13 @@ def get_game_for_guild(guild):
     return res
 
 
+def set_game_active_for_guild(guild, active):
+    session = scoped_session(sessionmaker(bind=engine))
+    res = session.query(GuildGame).filter_by(guild=guild).first()
+    res.active = active
+    session.commit()
+
+
 def is_game_active_for_guild(guild):
     return get_game_for_guild(guild).active == 1
 

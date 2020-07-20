@@ -4,6 +4,7 @@ import json
 from commands.help import send_help
 from commands.create import *
 from commands.set import *
+from commands.start_end import *
 
 cwd = os.getcwd()
 
@@ -93,6 +94,10 @@ async def process_command(bot, message):
         await do_initiative(message)
     elif command == "help":
         await send_help(bot, message)
+    elif command == "start":
+        await start_game(message)
+    elif command == "end":
+        await end_game(message)
     elif command == "clean":
         deleted = await message.channel.purge(check=message_is_to_do_with_bot, limit=50)
         await message.channel.send('Deleted {} message(s)'.format(len(deleted)), delete_after=10)
