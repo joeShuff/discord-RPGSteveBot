@@ -143,6 +143,17 @@
             "category": "gameplay"
         },
         {
+            "command": "<pref>improve",
+            "name": "improve",
+            "display_name": "Improve",
+            "syntax": "<pref>improve",
+            "example": "<pref>improve",
+            "description": "This triggers an upgrade of all the skills you've passed. When you run this command your GM has to react to the bots response to approve the improvement.",
+            "long_description": " All skills that you have passed will have a chance of upgrading.",
+            "parameters": [],
+            "category": "gameplay"
+        },
+        {
             "command": "<pref>start",
             "name": "start",
             "display_name": "Start",

@@ -101,6 +101,9 @@ async def process_command(bot, message):
     elif command == "roll":
         from commands.roll import do_roll
         await do_roll(message)
+    elif command == "improve":
+        from commands.improve import request_my_improvements
+        await request_my_improvements(message)
     elif command == "help":
         await send_help(bot, message)
     elif command == "start":

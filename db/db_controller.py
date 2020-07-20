@@ -86,6 +86,13 @@ class CharacterSkill(Base):
     passed_prev = Column(Integer)
 
 
+class CharacterImprovementRequest(Base):
+    __tablename__ = 'improvement_requests'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    character_id = Column(Integer)
+    improvement_message = Column(Integer)
+
+
 class CharacterInitiative(Base):
     __tablename__ = 'character_initiative'
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -135,6 +142,36 @@ def set_game_active_for_guild(guild, active):
 def is_game_active_for_guild(guild):
     return get_game_for_guild(guild).active == 1
 
+
+###########################################
+######          IMPROVEMENTS        #######
+###########################################
+
+def set_improvement_requested(character_id, message_id):
+    session = scoped_session(sessionmaker(bind=engine))
+    session.merge(CharacterImprovementRequest(
+        character_id=character_id,
+        improvement_message=message_id
+    ))
+    session.commit()
+
+
+def get_improvement_request_from_message(message_id):
+    session = scoped_session(sessionmaker(bind=engine))
+    res = session.query(CharacterImprovementRequest).filter_by(improvement_message=message_id).first()
+    return res
+
+
+def character_has_improvement_request(character_id):
+    session = scoped_session(sessionmaker(bind=engine))
+    res = session.query(CharacterImprovementRequest).filter_by(character_id=character_id).all()
+    return len(res) > 0
+
+
+def remove_character_improvement_requests(character_id):
+    session = scoped_session(sessionmaker(bind=engine))
+    res = session.query(CharacterImprovementRequest).filter_by(character_id=character_id).delete()
+    session.commit()
 
 ###########################################
 ###         INITIATIVE CONTROLS        ####
@@ -205,12 +242,12 @@ def close_initiative_if_complete_in_guild(guild):
     if is_initiative_complete_for_guild(guild):
         end_initiative_in_guild(guild)
 
+
 def is_initiative_complete_for_guild(guild):
     all_in_guild = get_characters_in_guild(guild, True)
     results_in_guild = get_initiative_results_for_guild(guild)
 
     return len(all_in_guild) == len(results_in_guild)
-
 
 
 ###########################################
@@ -273,10 +310,14 @@ def create_custom_skill(character_id, skill, value, modifier="NON"):
     session.commit()
 
 
-def set_skill(character_id, skill, value):
+def set_skill(character_id, skill, value, reset_pass=False):
     session = scoped_session(sessionmaker(bind=engine))
     db_skill = session.query(CharacterSkill).filter_by(character_id=character_id, skill_name=skill).first()
     db_skill.pass_level = value
+
+    if reset_pass:
+        db_skill.passed_prev = 0
+
     session.commit()
 
 
@@ -311,10 +352,10 @@ def get_character_for_slug(slug, guild):
     return result
 
 
-def get_character_for_id(id, guild):
+def get_character_for_id(id):
     session = scoped_session(sessionmaker(bind=engine))
 
-    result = session.query(Character).filter_by(id=id, guild_id=guild).first()
+    result = session.query(Character).filter_by(id=id).first()
     return result
 
 

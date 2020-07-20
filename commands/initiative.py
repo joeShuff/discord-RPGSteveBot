@@ -20,7 +20,7 @@ def get_initiative_embed_for_guild(guild, override_end=False, title_override=Non
         initiative_title = title_override
 
     for roll in initiative_results:
-        character = get_character_for_id(roll.character_id, guild)
+        character = get_character_for_id(roll.character_id)
 
         owner = character.owner_id
 

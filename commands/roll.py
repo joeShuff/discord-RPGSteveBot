@@ -47,13 +47,13 @@ def roll_hit(num_of_dice, dice_type, modifier):
     if num_of_dice >= 20:
         if modifier != 0:
             if modifier > 0:
-                return "lots of rolls + " + str(abs(modifier)) + " = " + str(total)
+                return "lots of rolls + " + str(abs(modifier)) + " = " + str(total), total
             else:
-                return "lots of rolls - " + str(abs(modifier)) + " = " + str(total)
+                return "lots of rolls - " + str(abs(modifier)) + " = " + str(total), total
         else:
-            return "lots of rolls = " + str(total)
+            return "lots of rolls = " + str(total), total
     else:
-        return results
+        return results, total
 
 
 async def do_roll(message):
@@ -112,8 +112,13 @@ async def do_roll(message):
             else:
                 dice_type = int(dice_type)
 
+        roll_result, total = roll_hit(num_of_dice, dice_type, modifier)
         embed = discord.Embed(title="Dice Roll " + str(num_of_dice) + "d" + str(dice_type), color=0x0000ff)
-        embed.add_field(name="Results", value=roll_hit(num_of_dice, dice_type, modifier))
+        embed.add_field(name="Results", value=roll_result)
+
+        if 100 >= total > 0:
+            dice_url = "https://raw.githubusercontent.com/joeShuff/discord-RPGSteveBot/master/art/dice/d{amount}.png"
+            embed.set_thumbnail(url=dice_url.replace("{amount}", str(total)))
 
         await message.channel.send(embed=embed)
     except ValueError as err:

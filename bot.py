@@ -55,6 +55,18 @@ async def on_message(message):
 
     await process_command(bot, message)
 
+@bot.event
+async def on_raw_reaction_add(payload):
+    channel = await bot.fetch_channel(payload.channel_id)
+    user = await channel.guild.fetch_member(payload.user_id)
+    message = await channel.fetch_message(payload.message_id)
+
+    if payload.user_id == bot.user.id:
+        return
+
+    from commands.improve import check_improvements_from_reaction
+    await check_improvements_from_reaction(payload.emoji, user, message)
+
 
 token = ""
 # with open(cwd + '/token.txt', 'r') as myfile:
