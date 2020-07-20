@@ -26,6 +26,8 @@ async def skill_check_for_character(message, character, skill_search, adv=False,
 
     checkable_skill = False
 
+    is_game_active = is_game_active_for_guild(str(message.guild.id))
+
     for key in base_stats.keys():
         if skill_search in base_stats[key]:
             chosen_stat_name = key
@@ -76,13 +78,13 @@ async def skill_check_for_character(message, character, skill_search, adv=False,
     chosen_roll = min(100, max(chosen_roll + modifier_amount, 0))
     result_message = str(chosen_roll) + " = "
 
-    if chosen_roll <= chosen_stat_pass_value and checkable_skill:
+    if chosen_roll <= chosen_stat_pass_value and checkable_skill and is_game_active:
         mark_skill_as_passed(character.id, chosen_stat_name)
 
     if chosen_roll < math.floor(chosen_stat_pass_value / 4):
-        result_message += "ACE"
+        result_message += "ACE :white_check_mark:"
     elif chosen_roll <= chosen_stat_pass_value:
-        result_message += "PASS"
+        result_message += "PASS :white_check_mark:"
     elif chosen_roll == 100:
         result_message += "oof, couldn't fail more"
     elif chosen_roll >= 98:
@@ -95,6 +97,9 @@ async def skill_check_for_character(message, character, skill_search, adv=False,
 
     embed = discord.Embed(title=character.character_name + "'s " + chosen_stat_name + " Check",
                           color=0x00ff00)
+
+    if not is_game_active:
+        embed.add_field(name="Offline Roll", value="This guilds game is offline so successful rolls aren't stored.", inline=False)
 
     dice_url = "https://raw.githubusercontent.com/joeShuff/discord-RPGSteveBot/master/art/dice/d{amount}.png"
     embed.set_thumbnail(url=dice_url.replace("{amount}", str(chosen_roll)))
