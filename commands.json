@@ -129,11 +129,17 @@
             "command": "<pref>initiative",
             "name": "initiative",
             "display_name": "Initiative",
-            "syntax": "<pref>initiative",
-            "example": "<pref>inititive",
-            "description": "This command is only for Game Masters. It rolls initative rolls for every player and NPC in your guild.",
+            "syntax": "<pref>initiative <mod>",
+            "example": "<pref>inititive a",
+            "description": "When initiative is active, use this to roll your initiative with or without advantage/disadvantage.",
             "long_description": "",
-            "parameters": [],
+            "parameters": [
+                {
+                    "name": "mod",
+                    "description": "Whether to apply advantage/disadvantage. Use `a` and `d`",
+                    "values": []
+                }
+            ],
             "category": "gameplay"
         },
         {
@@ -157,6 +163,23 @@
             "long_description": "",
             "parameters": [],
             "category": "gm_controls"
+        },
+        {
+            "command": "<pref>roll",
+            "name": "roll",
+            "display_name": "Roll",
+            "syntax": "<pref>roll <dice_format>",
+            "example": "<pref>roll 10d5+6",
+            "description": "This command rolls the dice configuration you define. Don't use spaces!",
+            "long_description": "",
+            "parameters": [
+                {
+                    "name": "dice_format",
+                    "description": "The dice config to roll. e.g. 3d10+4",
+                    "values": []
+                }
+            ],
+            "category": "gameplay"
         },
         {
             "command": "<pref>startinit",
