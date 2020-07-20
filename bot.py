@@ -4,6 +4,7 @@ from discord.ext.commands import Bot
 import os
 
 from commands.CommandManager import process_command
+from db.db_controller import create_game_if_not_in_guild
 
 import time
 
@@ -31,7 +32,13 @@ async def on_ready():
                               activity=discord.Game(name="loaded at " + str(time.time())))
 
     for guild in bot.guilds:
+        create_game_if_not_in_guild(guild)
         await create_permissions(guild)
+
+
+@bot.event
+async def on_guild_join(guild):
+    print("Joined a guild")
 
 
 @bot.event

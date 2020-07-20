@@ -24,6 +24,8 @@ async def skill_check_for_character(message, character, skill_search, adv=False,
     chosen_stat_pass_value = 0
     chosen_modifier = "NON"
 
+    checkable_skill = False
+
     for key in base_stats.keys():
         if skill_search in base_stats[key]:
             chosen_stat_name = key
@@ -38,6 +40,7 @@ async def skill_check_for_character(message, character, skill_search, adv=False,
             chosen_stat_name = skill.skill_name
             chosen_modifier = skill.modifier
             chosen_stat_pass_value = get_skill(character.id, chosen_stat_name)
+            checkable_skill = True
             break
 
     if chosen_stat_name == "":
@@ -72,6 +75,9 @@ async def skill_check_for_character(message, character, skill_search, adv=False,
 
     chosen_roll = min(100, max(chosen_roll + modifier_amount, 0))
     result_message = str(chosen_roll) + " = "
+
+    if chosen_roll <= chosen_stat_pass_value and checkable_skill:
+        mark_skill_as_passed(character.id, chosen_stat_name)
 
     if chosen_roll < math.floor(chosen_stat_pass_value / 4):
         result_message += "ACE"
@@ -141,7 +147,10 @@ async def perform_skill_check(message):
                 adv = parameters[1].lower() == "a"
                 disadv = parameters[1].lower() == "d"
 
-            await skill_check_for_character(message, my_char, parameters[0], adv, disadv)
+            if my_char is None:
+                await skill_check_error_message(message.channel, "You don't have a character in this guild")
+            else:
+                await skill_check_for_character(message, my_char, parameters[0], adv, disadv)
         else:
             await skill_check_error_message(message.channel, "Unknown syntax. Please do `?help check` for more info.")
 

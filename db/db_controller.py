@@ -4,6 +4,8 @@ from sqlalchemy.orm import relationship, sessionmaker, scoped_session
 from sqlalchemy import create_engine
 from datetime import datetime
 
+import time
+
 import json
 import os
 cwd = os.getcwd()
@@ -11,6 +13,13 @@ cwd = os.getcwd()
 Base = declarative_base()
 engine = None
 session = None
+
+class GuildGame(Base):
+    __tablename__ = 'guild_game'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    game_created_at = Column(String(255))
+    guild = Column(String(255))
+    active = Column(Integer)
 
 
 class Character(Base):
@@ -62,6 +71,7 @@ class Character(Base):
     def set_stat(self, stat, value):
         setattr(self, stat, value)
 
+
 class CharacterSkill(Base):
     __tablename__ = 'skill'
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -70,6 +80,7 @@ class CharacterSkill(Base):
     skill_name = Column(String(255))
     pass_level = Column(Integer)
     modifier = Column(String(255))
+    passed_prev = Column(Integer)
 
 
 engine = create_engine('sqlite:///steve_bot_storage.db')
@@ -77,6 +88,31 @@ Base.metadata.create_all(engine)
 Base.metadata.bind = engine
 session = scoped_session(sessionmaker(bind=engine))
 Base.metadata.create_all(engine)
+
+
+def create_game_if_not_in_guild(guild):
+    guild_id = str(guild.id)
+
+    if get_game_for_guild(guild_id) is None:
+        game = GuildGame(
+            game_created_at=str(int(time.time() * 1000)),
+            guild=guild_id,
+            active=0
+        )
+
+        session = scoped_session(sessionmaker(bind=engine))
+        session.merge(game)
+        session.commit()
+
+
+def get_game_for_guild(guild):
+    session = scoped_session(sessionmaker(bind=engine))
+    res = session.query(GuildGame).filter_by(guild=guild).first()
+    return res
+
+
+def is_game_active_for_guild(guild):
+    return get_game_for_guild(guild).active == 1
 
 
 def user_has_character_in_guild(owner, guild):
@@ -120,6 +156,13 @@ def set_character_stat(character, stat, value):
     result = session.query(Character).filter_by(id=char_id, guild_id=guild).first()
 
     result.set_stat(stat, value)
+    session.commit()
+
+
+def mark_skill_as_passed(character_id, skill):
+    session = scoped_session(sessionmaker(bind=engine))
+    db_skill = session.query(CharacterSkill).filter_by(character_id=character_id, skill_name=skill).first()
+    db_skill.passed_prev = 1
     session.commit()
 
 
