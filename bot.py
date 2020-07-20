@@ -29,7 +29,7 @@ async def create_permissions(guild):
 async def on_ready():
     print("on READY")
     await bot.change_presence(status=discord.Status.online,
-                              activity=discord.Game(name="loaded at " + str(time.time())))
+                              activity=discord.Game(name="you"))
 
     for guild in bot.guilds:
         create_game_if_not_in_guild(guild)
@@ -39,6 +39,8 @@ async def on_ready():
 @bot.event
 async def on_guild_join(guild):
     print("Joined a guild")
+    create_game_if_not_in_guild(guild)
+    await create_permissions(guild)
 
 
 @bot.event

@@ -20,6 +20,9 @@ class GuildGame(Base):
     game_created_at = Column(String(255))
     guild = Column(String(255))
     active = Column(Integer)
+    live_initiative = Column(Integer)
+    initiative_title = Column(String(255), default="")
+    initiative_message = Column(Integer)
 
 
 class Character(Base):
@@ -83,6 +86,14 @@ class CharacterSkill(Base):
     passed_prev = Column(Integer)
 
 
+class CharacterInitiative(Base):
+    __tablename__ = 'character_initiative'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    guild = Column(String(255))
+    character_id = Column(Integer)
+    init_result = Column(String(255))
+    roll_result = Column(Integer)
+
 engine = create_engine('sqlite:///steve_bot_storage.db')
 Base.metadata.create_all(engine)
 Base.metadata.bind = engine
@@ -90,6 +101,9 @@ session = scoped_session(sessionmaker(bind=engine))
 Base.metadata.create_all(engine)
 
 
+########################################
+####   GAME ACTIVITY                ####
+########################################
 def create_game_if_not_in_guild(guild):
     guild_id = str(guild.id)
 
@@ -122,6 +136,86 @@ def is_game_active_for_guild(guild):
     return get_game_for_guild(guild).active == 1
 
 
+###########################################
+###         INITIATIVE CONTROLS        ####
+###########################################
+def start_initiative_in_guild(guild, message_id, title):
+    session = scoped_session(sessionmaker(bind=engine))
+    res = session.query(GuildGame).filter_by(guild=guild).first()
+    res.live_initiative = 1
+    res.initiative_message = message_id
+    res.initiative_title = title
+    session.commit()
+
+
+def end_initiative_in_guild(guild):
+    session = scoped_session(sessionmaker(bind=engine))
+    res = session.query(GuildGame).filter_by(guild=guild).first()
+    res.live_initiative = 0
+    res.initiative_message = 0
+    res.initiative_title = ""
+
+    session.query(CharacterInitiative).filter_by(guild=guild).delete()
+
+    session.commit()
+
+
+def is_initiative_active_in_guild(guild):
+    session = scoped_session(sessionmaker(bind=engine))
+    res = session.query(GuildGame).filter_by(guild=guild).first()
+    return res.live_initiative == 1
+
+
+def get_initiative_results_for_guild(guild):
+    session = scoped_session(sessionmaker(bind=engine))
+    res = session.query(CharacterInitiative).filter_by(guild=guild).all()
+    return res
+
+
+def get_initiative_message_id_for_guild(guild):
+    session = scoped_session(sessionmaker(bind=engine))
+    res = session.query(GuildGame).filter_by(guild=guild).first()
+    return res.initiative_message
+
+
+def get_initiative_title_for_guild(guild):
+    session = scoped_session(sessionmaker(bind=engine))
+    res = session.query(GuildGame).filter_by(guild=guild).first()
+    return res.initiative_title
+
+
+def character_has_initiative_in_guild(character_id, guild):
+    session = scoped_session(sessionmaker(bind=engine))
+    res = session.query(CharacterInitiative).filter_by(guild=guild, character_id=character_id).first()
+    return res is not None
+
+
+def add_character_initiative_to_guild(guild, character_id, initiative_result, roll_result):
+    session = scoped_session(sessionmaker(bind=engine))
+    session.merge(CharacterInitiative(
+        guild=guild,
+        character_id=character_id,
+        init_result=initiative_result,
+        roll_result=roll_result
+    ))
+    session.commit()
+
+
+def close_initiative_if_complete_in_guild(guild):
+    if is_initiative_complete_for_guild(guild):
+        end_initiative_in_guild(guild)
+
+def is_initiative_complete_for_guild(guild):
+    all_in_guild = get_characters_in_guild(guild, True)
+    results_in_guild = get_initiative_results_for_guild(guild)
+
+    return len(all_in_guild) == len(results_in_guild)
+
+
+
+###########################################
+####           CHARACTER CONTROLS      ####
+###########################################
 def user_has_character_in_guild(owner, guild):
     char = get_character_for_owner(owner, guild)
     return char is not None

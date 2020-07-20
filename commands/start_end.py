@@ -1,4 +1,4 @@
-from db.db_controller import is_game_active_for_guild, set_game_active_for_guild
+from db.db_controller import is_game_active_for_guild, set_game_active_for_guild, end_initiative_in_guild
 
 
 async def change_state_error_message(channel, message):
@@ -28,6 +28,8 @@ async def end_game(message):
 
     if is_game_active_for_guild(str(message.guild.id)):
         set_game_active_for_guild(str(message.guild.id), 0)
+        end_initiative_in_guild(str(message.guild.id))
+
         await message.channel.send("Successfully ended the game in this guild. Thanks for playing!")
     else:
         await change_state_error_message(message.channel, "Game is already inactive in this guild!")

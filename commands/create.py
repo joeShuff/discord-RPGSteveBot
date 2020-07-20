@@ -5,10 +5,10 @@ from db.printer import *
 
 async def create_character(source_message, owner, guild, name):
 
-    # if user_has_character_in_guild(owner, guild):
-    #     existing_character = get_character_for_owner(owner, guild)
-    #     await already_has_character_message(source_message.channel, existing_character)
-    #     return
+    if user_has_character_in_guild(owner, guild):
+        existing_character = get_character_for_owner(owner, guild)
+        await already_has_character_message(source_message.channel, existing_character)
+        return
 
     ##Sort out the slug
     def_slug = name.split(" ")[0].lower()
