@@ -73,7 +73,8 @@ async def process_command(bot, message):
             await create_character(message, sender, guild, " ".join(parameters))
 
     elif command == "me":
-        await print_character_for_user(message.channel, sender)
+        from commands.me import me_command
+        await me_command(message)
     elif command == "set":
         from commands.set import run_set
         await run_set(message)
@@ -104,6 +105,12 @@ async def process_command(bot, message):
     elif command == "improve":
         from commands.improve import request_my_improvements
         await request_my_improvements(message)
+    elif command == "activate":
+        from commands.activation import activate_character
+        await activate_character(message)
+    elif command == "deactivate":
+        from commands.activation import deactivate_character
+        await deactivate_character(message)
     elif command == "help":
         await send_help(bot, message)
     elif command == "start":

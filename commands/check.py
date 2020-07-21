@@ -75,6 +75,8 @@ async def skill_check_for_character(message, character, skill_search, adv=False,
             roll_output_text = "~~" + str(roll_result) + "~~ " + str(other_roll)
             chosen_roll = other_roll
 
+    roll_output_text = "`d100` = " + roll_output_text
+
     chosen_roll = min(100, max(chosen_roll + modifier_amount, 0))
     result_message = str(chosen_roll) + " = "
 

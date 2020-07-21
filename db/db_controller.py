@@ -29,6 +29,7 @@ class Character(Base):
     __tablename__ = 'character'
     id = Column(Integer, primary_key=True, autoincrement=True)
     created_at = Column(String(255))
+    is_active = Column(Integer, default=1)
     character_image = Column(String(255), default="")
     character_name = Column(String(255), default="Character")
     character_slug = Column(String(255), default="char")
@@ -244,7 +245,7 @@ def close_initiative_if_complete_in_guild(guild):
 
 
 def is_initiative_complete_for_guild(guild):
-    all_in_guild = get_characters_in_guild(guild, True)
+    all_in_guild = get_characters_in_guild(guild, True, False)
     results_in_guild = get_initiative_results_for_guild(guild)
 
     return len(all_in_guild) == len(results_in_guild)
@@ -334,14 +335,7 @@ guild - The id of the guild running on
 def get_character_for_owner(owner, guild):
     session = scoped_session(sessionmaker(bind=engine))
 
-    result = session.query(Character).filter_by(owner_id=owner, guild_id=guild).first()
-    return result
-
-
-def get_character_for_name(name, guild):
-    session = scoped_session(sessionmaker(bind=engine))
-
-    result = session.query(Character).filter_by(character_name=name, guild_id=guild).first()
+    result = session.query(Character).filter_by(owner_id=owner, guild_id=guild, is_active=1).first()
     return result
 
 
@@ -355,28 +349,29 @@ def get_character_for_slug(slug, guild):
 def get_character_for_id(id):
     session = scoped_session(sessionmaker(bind=engine))
 
-    result = session.query(Character).filter_by(id=id).first()
+    result = session.query(Character).filter_by(id=id, is_active=1).first()
     return result
 
 
 def get_character_created_at(created_at, guild):
     session = scoped_session(sessionmaker(bind=engine))
 
-    result = session.query(Character).filter_by(created_at=created_at, guild_id=guild).first()
+    result = session.query(Character).filter_by(created_at=created_at, guild_id=guild, is_active=1).first()
     return result
 
 
-def get_characters_in_guild(guild, incl_npc = False):
+def get_characters_in_guild(guild, incl_npc=False, incl_inactive=True):
     session = scoped_session(sessionmaker(bind=engine))
 
     result = session.query(Character).filter_by(guild_id=guild).all()
 
-    if incl_npc:
-        return result
-    else:
+    if not incl_npc:
         result = [x for x in result if x.owner_id != "NPC"]
-        # result = list(filter((x for x in result if x.owner_id != "NPC"), result))
-        return result
+
+    if not incl_inactive:
+        result = [x for x in result if x.is_active == 1]
+
+    return result
 
 
 def get_skills_for_character(character_id):
@@ -384,3 +379,18 @@ def get_skills_for_character(character_id):
 
     result = session.query(CharacterSkill).filter_by(character_id=character_id).all()
     return result
+
+
+def is_character_active(character_id):
+    session = scoped_session(sessionmaker(bind=engine))
+
+    result = session.query(Character).filter_by(id=character_id).first()
+    return result.is_active == 1
+
+
+def set_character_activation(character_id, activation):
+    session = scoped_session(sessionmaker(bind=engine))
+
+    result = session.query(Character).filter_by(id=character_id).first()
+    result.is_active = activation
+    session.commit()

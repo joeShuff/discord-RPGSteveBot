@@ -18,40 +18,42 @@ async def print_character_created_at(channel, created_at):
     await print_character(channel, char)
 
 
-async def print_character_for_user(channel, user):
-    char = get_character_for_owner(user, str(channel.guild.id))
-
-    if char is not None:
-        await print_character(channel, char)
-    else:
-        await no_character_found(channel)
-
-
 async def print_character(channel, character, in_detail=False):
     main_embed = discord.Embed(
         color=0xff0000,
-        title=character.character_name + " (" + character.character_slug + ")",
-        timestamp=datetime.datetime.now()
+        title=character.character_name + " (" + character.character_slug + ")"
     )
 
+    owner = character.owner_id
+
+    if owner != "NPC":
+        owner = "<@!" + str(owner) + ">"
+
     if len(character.character_image) > 0:
-        main_embed.set_image(character.character_image)
+        main_embed.set_image(url=character.character_image)
 
     main_stats_1 = [
         "**Strength**: " + str(character.strength) + " (*" + str(character.get_modifier(character.strength)) + "*)",
-        "**Power**: " + str(character.power) + " (*" + str(character.get_modifier(character.power)) + "*)",
-        "**Dexterity**: " + str(character.dexterity) + " (*" + str(character.get_modifier(character.dexterity)) + "*)",
-        "**Intelligence**: " + str(character.intelligence) + " (*" + str(character.get_modifier(character.intelligence)) + "*)"
-    ]
-
-    main_stats_2 = [
         "**Education**: " + str(character.education) + " (*" + str(character.get_modifier(character.education)) + "*)",
+        "**Power**: " + str(character.power) + " (*" + str(character.get_modifier(character.power)) + "*)",
         "**Size**: " + str(character.size) + " (*" + str(character.get_modifier(character.size)) + "*)",
+        "**Dexterity**: " + str(character.dexterity) + " (*" + str(character.get_modifier(character.dexterity)) + "*)",
         "**Constitution**: " + str(character.constitution) + " (*" + str(character.get_modifier(character.constitution)) + "*)",
+        "**Intelligence**: " + str(character.intelligence) + " (*" + str(character.get_modifier(character.intelligence)) + "*)",
         "**Appearance**: " + str(character.appearance) + " (*" + str(character.get_modifier(character.appearance)) + "*)"
     ]
 
-    main_embed.add_field(name="Main Statistics", value="\n".join(main_stats_1), inline=True)
-    main_embed.add_field(name="-----", value="\n".join(main_stats_2), inline=True)
+    health_text = str(character.hitpoints_curr) + "/" + str(character.hitpoints_max)
+    stability_text = str(character.stability_curr) + "/" + str(character.stability_max)
+    speed_text = str(character.speed)
+    xp_text = "Level " + str(character.level) + " (" + str(character.xp) + " XP)"
+
+    main_embed.add_field(name="Owner", value=owner, inline=True)
+    main_embed.add_field(name="Health", value=health_text, inline=True)
+    main_embed.add_field(name="Stability", value=stability_text, inline=True)
+    main_embed.add_field(name="Speed", value=speed_text, inline=True)
+    main_embed.add_field(name="Level & XP", value=xp_text, inline=True)
+
+    main_embed.add_field(name="Base Skills", value="\n".join(main_stats_1), inline=False)
 
     await channel.send(embed=main_embed)

@@ -50,7 +50,7 @@
             "display_name": "Me",
             "syntax": "<pref>me",
             "example": "<pref>me",
-            "description": "Prints out your character info.",
+            "description": "Prints out your character info. GMs can use a slug to get a certain character.",
             "long_description": "",
             "parameters": [],
             "category": "character"
@@ -212,6 +212,40 @@
             "description": "Command for Game Masters to end initiative rolls in this game.",
             "long_description": "",
             "parameters": [],
+            "category": "gm_controls"
+        },
+        {
+            "command": "<pref>activate",
+            "name": "activate",
+            "display_name": "Activate Character",
+            "syntax": "<pref>activate <slug>",
+            "example": "<pref>activate herbert",
+            "description": "Command for Game Masters to activate a character to be included in initiative",
+            "long_description": "",
+            "parameters": [
+                {
+                    "name": "slug",
+                    "description": "Character slug to activate",
+                    "values": []
+                }
+            ],
+            "category": "gm_controls"
+        },
+        {
+            "command": "<pref>deactivate",
+            "name": "deactivate",
+            "display_name": "Deactivate Character",
+            "syntax": "<pref>deactivate <slug>",
+            "example": "<pref>deactivate herbert",
+            "description": "Command for Game Masters to deactivate a character to be included in initiative",
+            "long_description": "",
+            "parameters": [
+                {
+                    "name": "slug",
+                    "description": "Character slug to activate",
+                    "values": []
+                }
+            ],
             "category": "gm_controls"
         },
         {
