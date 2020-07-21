@@ -28,6 +28,8 @@ async def skill_check_for_character(message, character, skill_search, adv=False,
 
     is_game_active = is_game_active_for_guild(str(message.guild.id))
 
+    skill_search = skill_search.lower()
+
     for key in base_stats.keys():
         if skill_search in base_stats[key]:
             chosen_stat_name = key

@@ -54,6 +54,6 @@ async def create_npc(source_message, guild, name):
         guild_id=guild
     )
 
-    add_character_to_db(char, False)
+    add_character_to_db(char, True)
 
     await print_character_created_at(source_message.channel, create_at)

@@ -271,20 +271,24 @@ def add_character_to_db(character, add_skills=False):
     me_in_db = get_character_created_at(character.created_at, character.guild_id)
 
     if add_skills:
-        with open(cwd + '/default_skills.json', 'r') as myfile:
-            loaded_json = json.loads(myfile.read().replace('\n', ''))
+        create_default_skills_for_char(me_in_db)
 
-            session = scoped_session(sessionmaker(bind=engine))
 
-            for skill in loaded_json:
-                session.merge(CharacterSkill(
-                    character_id=me_in_db.id,
-                    skill_name=skill['name'],
-                    synonyms=",".join(skill['synonyms']),
-                    pass_level=int(skill['default_value']),
-                    modifier=skill['modifier']))
+def create_default_skills_for_char(character):
+    with open(cwd + '/default_skills.json', 'r') as myfile:
+        loaded_json = json.loads(myfile.read().replace('\n', ''))
 
-            session.commit()
+        session = scoped_session(sessionmaker(bind=engine))
+
+        for skill in loaded_json:
+            session.merge(CharacterSkill(
+                character_id=character.id,
+                skill_name=skill['name'],
+                synonyms=",".join(skill['synonyms']),
+                pass_level=int(skill['default_value']),
+                modifier=skill['modifier']))
+
+        session.commit()
 
 
 def set_character_stat(character, stat, value):

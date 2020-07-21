@@ -24,6 +24,9 @@ base_stats = {
     ],
     "Intelligence": [
         "int", "intelligence"
+    ],
+    "Speed": [
+        "spd", "speed"
     ]
 }
 

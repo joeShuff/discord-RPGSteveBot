@@ -66,7 +66,7 @@ async def do_roll(message):
         await roll_error_message(message.channel, "Please include a dice format to roll. e.g. 12d10+5")
         return
 
-    roll = parameters[0]
+    roll = "".join(parameters)
 
     if roll.find('+') != -1:
         roll, modifier = roll.split('+')
@@ -115,6 +115,7 @@ async def do_roll(message):
         roll_result, total = roll_hit(num_of_dice, dice_type, modifier)
         embed = discord.Embed(title="Dice Roll " + str(num_of_dice) + "d" + str(dice_type), color=0x0000ff)
         embed.add_field(name="Results", value=roll_result)
+        embed.add_field(name="Roller", value=message.author.mention)
 
         if 100 >= total > 0:
             dice_url = "https://raw.githubusercontent.com/joeShuff/discord-RPGSteveBot/master/art/dice/d{amount}.png"
