@@ -1,5 +1,5 @@
 from db.db_controller import *
-from commands.set import base_stats
+from commands.set.set import base_stats
 from random import randrange
 import discord
 import math

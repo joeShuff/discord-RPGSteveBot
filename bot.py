@@ -1,12 +1,9 @@
-from discord.ext import tasks
 import discord
 from discord.ext.commands import Bot
 import os
 
 from commands.CommandManager import process_command
 from db.db_controller import create_game_if_not_in_guild
-
-import time
 
 cwd = os.getcwd()
 bot = Bot(":")
@@ -89,7 +86,7 @@ async def on_raw_reaction_add(payload):
         if payload.user_id == bot.user.id:
             return
 
-        from commands.improve import check_improvements_from_reaction
+        from commands.improve.improve import check_improvements_from_reaction
         await check_improvements_from_reaction(payload.emoji, user, message)
     except Exception as e:
         from git.github_connection import report_error_to_repo

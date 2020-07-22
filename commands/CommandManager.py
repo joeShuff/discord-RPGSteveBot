@@ -1,10 +1,7 @@
-import os
-import json
-
-from commands.help import send_help
-from commands.create import *
-from commands.set import *
-from commands.start_end import *
+from commands.help.help import send_help
+from commands.create.create import *
+from commands.set.set import *
+from commands.start_end.start_end import *
 
 cwd = os.getcwd()
 
@@ -73,13 +70,13 @@ async def process_command(bot, message):
             await create_character(message, sender, guild, " ".join(parameters))
 
     elif command == "me":
-        from commands.me import me_command
+        from commands.me.me import me_command
         await me_command(message)
     elif command == "set":
-        from commands.set import run_set
+        from commands.set.set import run_set
         await run_set(message)
     elif command == "skill":
-        from commands.skill import print_skill_info, create_new_skill
+        from commands.skill.skill import print_skill_info, create_new_skill
         if len(parameters) == 1:
             await print_skill_info(message, parameters[0])
         elif len(parameters) == 3:
@@ -88,28 +85,28 @@ async def process_command(bot, message):
             await message.channel.send("Unknown syntax. Please do `<pref>help skill` to learn more".replace("<pref>", prefix))
 
     elif command == "check":
-        from commands.check import perform_skill_check
+        from commands.check.check import perform_skill_check
         await perform_skill_check(message)
     elif command == "startinit":
-        from commands.initiative import start_initiative
+        from commands.initiative.initiative import start_initiative
         await start_initiative(message)
     elif command == "endinit":
-        from commands.initiative import end_initiative
+        from commands.initiative.initiative import end_initiative
         await end_initiative(message)
     elif command == "initiative":
-        from commands.initiative import do_my_initiative
+        from commands.initiative.initiative import do_my_initiative
         await do_my_initiative(message)
     elif command == "roll":
-        from commands.roll import do_roll
+        from commands.roll.roll import do_roll
         await do_roll(message)
     elif command == "improve":
-        from commands.improve import request_my_improvements
+        from commands.improve.improve import request_my_improvements
         await request_my_improvements(message)
     elif command == "activate":
-        from commands.activation import activate_character
+        from commands.activation.activation import activate_character
         await activate_character(message)
     elif command == "deactivate":
-        from commands.activation import deactivate_character
+        from commands.activation.activation import deactivate_character
         await deactivate_character(message)
     elif command == "help":
         await send_help(bot, message)
@@ -118,7 +115,7 @@ async def process_command(bot, message):
     elif command == "end":
         await end_game(message)
     elif command == "invite":
-        from commands.invite import invite_link
+        from commands.invite.invite import invite_link
         await invite_link(message, bot)
     elif command == "clean":
         deleted = await message.channel.purge(check=message_is_to_do_with_bot, limit=50)
