@@ -326,9 +326,12 @@ def set_skill(character_id, skill, value, reset_pass=False):
     session.commit()
 
 
-def get_skill(character_id, skill):
+def get_skill(character_id, skill_name):
     session = scoped_session(sessionmaker(bind=engine))
-    db_skill = session.query(CharacterSkill).filter_by(character_id=character_id, skill_name=skill).first()
+    db_skill = session.query(CharacterSkill).filter_by(character_id=character_id, skill_name=skill_name).first()
+    if db_skill == None:
+        return None
+
     return db_skill.pass_level
 
 

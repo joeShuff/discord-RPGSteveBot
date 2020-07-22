@@ -97,11 +97,11 @@ async def set_stat(message, character, stat, value):
     for skill in other_skills:
         if stat == skill.skill_name.lower():
             to_set_stat = skill.skill_name
-            original_value = get_skill(character.id, set_stat)
-            set_skill(character.id, set_stat, value)
+            original_value = get_skill(character.id, to_set_stat)
+            set_skill(character.id, to_set_stat, value)
             break
 
-    if set_stat != "":
+    if to_set_stat != "":
         await send_set_complete(message.channel, character, to_set_stat, value, original_value)
     else:
-        await send_set_error(message.channel, "Cannot find stat for value `" + str(stat) + "`. If you want to create a custom skill try `?skill create <skill name> <default value, default = 10> <modifier, default = NON>")
+        await send_set_error(message.channel, "Cannot find stat for value `" + str(stat) + "`. If you want to create a custom skill try `?skill create <skill name> <default value, default = 10> <modifier, default = NON>`")
