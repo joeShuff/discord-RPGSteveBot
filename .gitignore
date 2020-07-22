@@ -137,3 +137,5 @@ test_bot_token.txt
 .idea/
 
 dealbot_config.db
+
+git/git_access_token.txt
