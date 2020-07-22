@@ -81,10 +81,10 @@
             "command": "<pref>set",
             "name": "set",
             "display_name": "Set",
-            "syntax": "<pref>set <skill> <value>",
-            "example": "<pref>set dex 70",
-            "description": "Sets your characters values to a new value",
-            "long_description": "",
+            "syntax": "<pref>set <slug> <skill> <value>",
+            "example": "<pref>set herbert dex 70",
+            "description": "Sets a characters values to a new value",
+            "long_description": "This can only be used by Game Masters.",
             "parameters": [
                 {
                     "name": "skill",
@@ -106,7 +106,7 @@
                     "values": []
                 }
             ],
-            "category": "character"
+            "category": "gm_controls"
         },
         {
             "command": "<pref>check",
@@ -256,6 +256,17 @@
             "example": "<pref>clean",
             "description": "Clean recent messages from the bot and commands to do with the bot.",
             "long_description": "Searches the 50 most recent messages.",
+            "parameters": [],
+            "category": "help"
+        },
+        {
+            "command": "<pref>invite",
+            "name": "invite",
+            "display_name": "Invite",
+            "syntax": "<pref>invite",
+            "example": "<pref>invite",
+            "description": "Get invite link for this bot",
+            "long_description": "",
             "parameters": [],
             "category": "help"
         },

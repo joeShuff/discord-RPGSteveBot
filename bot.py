@@ -55,6 +55,7 @@ async def on_message(message):
 
     await process_command(bot, message)
 
+
 @bot.event
 async def on_raw_reaction_add(payload):
     channel = await bot.fetch_channel(payload.channel_id)

@@ -15,6 +15,8 @@ async def send_help(bot, message):
     loaded_commands, loaded_categories = load_commands_and_categories()
 
     if len(parameters[0]) == 0:
+        # loaded_categories = [x for x in loaded_categories if x['show_in_base_help'] != show_hidden_only]
+
         embed_response = discord.Embed(title="SteveBot Help", description="Hover on command for info", color=0x046EB2)
 
         for category in loaded_categories:
@@ -22,9 +24,7 @@ async def send_help(bot, message):
 
             for command in loaded_commands:
                 if command['category'] == category['name']:
-                    cat_value += "- [**" + str(
-                        command['display_name']) + "**](https://www.github.com/joeShuff/Discord-DealBot '" + str(
-                        command['description']) + "') `" + str(command['syntax'].replace("<pref>", prefix)) + "`\n"
+                    cat_value += ("- [**" + str(command['display_name']) + "**](https://www.github.com/joeShuff/Discord-DealBot '<pref>help " + str(command['name']) + "') `" + str(command['syntax']) + "`\n").replace("<pref>", prefix)
 
             if len(cat_value) == 0:
                 cat_value = "No commands in this category."
@@ -36,6 +36,10 @@ async def send_help(bot, message):
         chosen_command = parameters[0]
 
         found_command = False
+
+        if chosen_command == "gm":
+            await send_help(bot, message, True, True)
+            return
 
         for command in loaded_commands:
             if command['name'] == chosen_command:

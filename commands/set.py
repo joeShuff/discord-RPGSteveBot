@@ -58,12 +58,13 @@ async def run_set(message):
             else:
                 await set_stat(message, char, skill, new_value)
         else:
-            await send_set_error(message.channel, "You're a game master. The syntax for you is `?set <char slug> <skill> <value>`")
+            await send_set_error(message.channel, "Unknown syntax. Please try `?set <char slug> <skill> <value>`")
     else:
-        if len(parameters) == 2:
-            await set_stat(message, get_character_for_owner(sender, guild), parameters[0], parameters[1])
-        else:
-            await send_set_error(message.channel, "Unknown syntax. Please do `?help set` for more info.")
+        await send_set_error(message.channel, "This command is for Game Masters only!")
+        # if len(parameters) == 2:
+        #     await set_stat(message, get_character_for_owner(sender, guild), parameters[0], parameters[1])
+        # else:
+        #     await send_set_error(message.channel, "Unknown syntax. Please do `?help set` for more info.")
 
 
 async def set_stat(message, character, stat, value):
