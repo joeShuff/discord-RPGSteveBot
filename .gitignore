@@ -139,3 +139,5 @@ test_bot_token.txt
 dealbot_config.db
 
 git/git_access_token.txt
+
+steve_bot_storage.db
