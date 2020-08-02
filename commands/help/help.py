@@ -24,7 +24,7 @@ async def send_help(bot, message):
 
             for command in loaded_commands:
                 if command['category'] == category['name']:
-                    cat_value += ("- [**" + str(command['display_name']) + "**](https://www.github.com/joeShuff/Discord-DealBot '<pref>help " + str(command['name']) + "') `" + str(command['syntax']) + "`\n").replace("<pref>", prefix)
+                    cat_value += ("- [**" + str(command['display_name']) + "**](https://github.com/joeShuff/discord-RPGSteveBot/tree/master/commands/" + command['name'] + " '<pref>help " + str(command['name']) + "') `" + str(command['syntax']) + "`\n").replace("<pref>", prefix)
 
             if len(cat_value) == 0:
                 cat_value = "No commands in this category."
