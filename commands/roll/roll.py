@@ -56,17 +56,12 @@ def roll_hit(num_of_dice, dice_type, modifier):
         return results, total
 
 
-async def do_roll(message):
+# Takes in a string representation of a roll
+# outputs 3 parameters
+# number of dice, dice_type, modifier
+# self explanatory, d5 for example, +5 for example
+def parse_dice_roll(roll):
     modifier, num_of_dice, dice_type = 0, 0, 0
-
-    message_content = message.content[1:]
-    parameters = message_content.split(" ")[1:]
-
-    if len(parameters) == 0:
-        await roll_error_message(message.channel, "Please include a dice format to roll. e.g. 12d10+5")
-        return
-
-    roll = "".join(parameters)
 
     if roll.find('+') != -1:
         roll, modifier = roll.split('+')
@@ -78,39 +73,53 @@ async def do_roll(message):
         num_of_dice, dice_type = roll.split('d')
 
     if modifier == 0 and num_of_dice == 0 and dice_type == 0:
-        await roll_error_message(message.channel, "Invalid dice format, try something like 6d9+1")
+        raise ValueError("Invalid dice format, try something like 6d9+1")
         return
 
-    # Validate data
+    #Validate data
+    if len(str(num_of_dice)) == 0:
+        num_of_dice = "1"
+
+    if modifier != 0:
+        if is_num(modifier) is False:
+            raise ValueError("Modifier value format error. Proper usage 1d4+1")
+            return
+        else:
+            modifier = int(modifier)
+
+    if num_of_dice != 0:
+        if is_num(num_of_dice) is False:
+            raise ValueError("Number of dice format error. Proper usage 3d6")
+            return
+        else:
+            num_of_dice = int(num_of_dice)
+
+    if num_of_dice > 200:
+        raise ValueError("Too many dice. Please limit to 200 or less.")
+        return
+
+    if dice_type != 0:
+        if is_num(dice_type) is False:
+            raise ValueError("Dice type format error. Proper usage 3d6")
+            return
+        else:
+            dice_type = int(dice_type)
+
+    return num_of_dice, dice_type, modifier
+
+
+async def do_roll(message):
+    message_content = message.content[1:]
+    parameters = message_content.split(" ")[1:]
+
+    if len(parameters) == 0:
+        await roll_error_message(message.channel, "Please include a dice format to roll. e.g. 12d10+5")
+        return
+
+    roll = "".join(parameters)
 
     try:
-        if len(str(num_of_dice)) == 0:
-            num_of_dice = "1"
-
-        if modifier != 0:
-            if is_num(modifier) is False:
-                raise ValueError("Modifier value format error. Proper usage 1d4+1")
-                return
-            else:
-                modifier = int(modifier)
-
-        if num_of_dice != 0:
-            if is_num(num_of_dice) is False:
-                raise ValueError("Number of dice format error. Proper usage 3d6")
-                return
-            else:
-                num_of_dice = int(num_of_dice)
-
-        if num_of_dice > 200:
-            raise ValueError("Too many dice. Please limit to 200 or less.")
-            return
-
-        if dice_type != 0:
-            if is_num(dice_type) is False:
-                raise ValueError("Dice type format error. Proper usage 3d6")
-                return
-            else:
-                dice_type = int(dice_type)
+        num_of_dice, dice_type, modifier = parse_dice_roll(roll)
 
         roll_result, total = roll_hit(num_of_dice, dice_type, modifier)
         embed = discord.Embed(title="Dice Roll " + str(num_of_dice) + "d" + str(dice_type), color=0x0000ff)
