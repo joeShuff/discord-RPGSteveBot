@@ -126,6 +126,23 @@
             "category": "gameplay"
         },
         {
+            "command": "<pref>stability",
+            "name": "stability",
+            "display_name": "Stability",
+            "syntax": "<pref>stability <dice roll>",
+            "example": "<pref>stability d6",
+            "description": "Roll a stability check and if you fail, roll a dice for stability damage!",
+            "long_description": "For GMs, use `<pref>stability <slug> <dice roll>` to roll for any player in your guild.",
+            "parameters": [
+                {
+                    "name": "dice roll",
+                    "description": "The dice roll to roll on a failed check.",
+                    "values": []
+                }
+            ],
+            "category": "gameplay"
+        },
+        {
             "command": "<pref>initiative",
             "name": "initiative",
             "display_name": "Initiative",

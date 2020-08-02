@@ -87,6 +87,9 @@ async def process_command(bot, message):
     elif command == "check":
         from commands.check.check import perform_skill_check
         await perform_skill_check(message)
+    elif command == "stability":
+        from commands.stability.stability import do_stability_check
+        await do_stability_check(message)
     elif command == "startinit":
         from commands.initiative.initiative import start_initiative
         await start_initiative(message)

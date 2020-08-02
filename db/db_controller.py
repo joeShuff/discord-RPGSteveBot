@@ -302,6 +302,17 @@ def set_character_stat(character, stat, value):
     session.commit()
 
 
+def set_character_stability(character, value):
+    char_id = character.id
+    guild = character.guild_id
+
+    session = scoped_session(sessionmaker(bind=engine))
+    result = session.query(Character).filter_by(id=char_id, guild_id=guild).first()
+
+    result.stability_curr = min(max(value, 0), character.stability_max)
+    session.commit()
+
+
 def mark_skill_as_passed(character_id, skill):
     session = scoped_session(sessionmaker(bind=engine))
     db_skill = session.query(CharacterSkill).filter_by(character_id=character_id, skill_name=skill).first()
