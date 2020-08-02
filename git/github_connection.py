@@ -13,6 +13,8 @@ def similar(a, b):
 def report_error_to_repo(bot, thrown):
     access_token = ""
 
+    print(str(thrown))
+
     with open(cwd + '/git/git_access_token.txt', 'r') as myfile:
         access_token = myfile.read()
 

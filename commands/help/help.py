@@ -47,7 +47,7 @@ async def send_help(bot, message):
                 embed_response = discord.Embed(title="Help for " + str(command['display_name']), color=0x046EB2)
 
                 embed_response.add_field(name="Description",
-                                         value=str(command['description']) + str(command['long_description']),
+                                         value=(str(command['description']) + " " + str(command['long_description'])).replace("<pref>", prefix),
                                          inline=False)
                 embed_response.add_field(name="Syntax",
                                          value="`" + str(command['syntax']).replace("<pref>", prefix) + "`",
