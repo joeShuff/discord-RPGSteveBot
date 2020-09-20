@@ -28,7 +28,7 @@ async def skill_check_for_character(message, character, skill_search, adv=False,
 
     is_game_active = is_game_active_for_guild(str(message.guild.id))
 
-    skill_search = skill_search.lower()
+    skill_search = skill_search.lower().replace(" ", "")
 
     for key in base_stats.keys():
         if skill_search in base_stats[key]:
@@ -40,7 +40,7 @@ async def skill_check_for_character(message, character, skill_search, adv=False,
     other_skills = get_skills_for_character(character.id)
 
     for skill in other_skills:
-        if skill_search == skill.skill_name.lower():
+        if skill_search == skill.skill_name.lower().replace(" ", ""):
             chosen_stat_name = skill.skill_name
             chosen_modifier = skill.modifier
             chosen_stat_pass_value = get_skill(character.id, chosen_stat_name)
