@@ -360,8 +360,8 @@ async def add_xp(character, xp, channel):
                 level_up_embed = discord.Embed(title=result.character_name + " is now Level " + str(result.level),
                                                description="You can now upgrade 2 skills for free! Do `?improve <skillname>` to improve it.",
                                                color=0x00ff00)
-                level_up_embed.set_image(url="https://tenor.com/view/excited-hockey-kid-yeah-gif-10474493")
                 await channel.send(embed=level_up_embed)
+                await channel.send("https://youtu.be/zS1cLOIxsQ8?t=17")
 
             break
         except KeyError:
