@@ -24,6 +24,11 @@
             "name": "help",
             "display_name": ":question: Help",
             "order": 4
+        },
+        {
+            "name": "game_admin",
+            "display_name": ":computer: Game Admin",
+            "order": 5
         }
     ],
     "commands":[
@@ -179,7 +184,7 @@
             "description": "This command starts the game for this guild. Successful rolls are stored.",
             "long_description": "",
             "parameters": [],
-            "category": "gm_controls"
+            "category": "game_admin"
         },
         {
             "command": "<pref>end",
@@ -190,7 +195,7 @@
             "description": "This command ends the game for this guild. Successful rolls are no longer stored.",
             "long_description": "",
             "parameters": [],
-            "category": "gm_controls"
+            "category": "game_admin"
         },
         {
             "command": "<pref>roll",
@@ -246,7 +251,7 @@
                     "values": []
                 }
             ],
-            "category": "gm_controls"
+            "category": "game_admin"
         },
         {
             "command": "<pref>deactivate",
@@ -260,6 +265,72 @@
                 {
                     "name": "slug",
                     "description": "Character slug to activate",
+                    "values": []
+                }
+            ],
+            "category": "game_admin"
+        },
+        {
+            "command": "<pref>xp",
+            "name": "xp",
+            "display_name": "XP",
+            "syntax": "<pref>xp <dice_format> <mention players to give xp to>",
+            "example": "<pref>roll 10d5+6 @Steve @Joe",
+            "description": "This command rolls the dice configuration you define and gives XP to the people you mentioned. Don't use spaces!",
+            "long_description": "",
+            "parameters": [
+                {
+                    "name": "dice_format",
+                    "description": "The dice config to roll. e.g. 3d10+4",
+                    "values": []
+                },
+                {
+                    "name": "mentions",
+                    "description": "Mention the people whose characters you want to give XP to.",
+                    "values": []
+                }
+            ],
+            "category": "gm_controls"
+        },
+        {
+            "command": "<pref>mark",
+            "name": "mark",
+            "display_name": "Mark Skill",
+            "syntax": "<pref>mark <character_slug> <skillname>",
+            "example": "<pref>mark balrock throw",
+            "description": "Use this command to mark a skill as passed for a character.",
+            "long_description": "",
+            "parameters": [
+                {
+                    "name": "character_slug",
+                    "description": "The character to mark a skill as passed for.",
+                    "values": []
+                },
+                {
+                    "name": "skillname",
+                    "description": "The skill to mark",
+                    "values": []
+                }
+            ],
+            "category": "gm_controls"
+        },
+        {
+            "command": "<pref>unmark",
+            "name": "unmark",
+            "display_name": "Unmark Skill",
+            "syntax": "<pref>unmark <character_slug> <skillname>",
+            "example": "<pref>unmark balrock throw",
+            "description": "Use this command to unmark a skill as passed for a character.",
+            "long_description": "",
+            "parameters": [
+                {
+                    "name": "character_slug",
+                    "description": "The character to unmark a skill as passed for.",
+                    "values": []
+                },
+                {
+                    "name": "skillname",
+                    "description": "The skill to unmark",
                     "values": []
                 }
             ],

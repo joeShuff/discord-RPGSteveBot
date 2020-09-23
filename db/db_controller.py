@@ -4,6 +4,8 @@ from sqlalchemy.orm import relationship, sessionmaker, scoped_session
 from sqlalchemy import create_engine
 from datetime import datetime
 
+import discord
+
 import time
 
 import json
@@ -49,6 +51,7 @@ class Character(Base):
     hitpoints_curr = Column(Integer, default=20)
     stability_max = Column(Integer, default=80)
     stability_curr = Column(Integer, default=80)
+    free_improvements = Column(Integer, default=0)
     speed = Column(Integer, default=60)
 
     def get_modifier(self, value):
@@ -317,6 +320,72 @@ def mark_skill_as_passed(character_id, skill):
     session = scoped_session(sessionmaker(bind=engine))
     db_skill = session.query(CharacterSkill).filter_by(character_id=character_id, skill_name=skill).first()
     db_skill.passed_prev = 1
+    session.commit()
+
+
+def mark_skill_as_not_passed(character_id, skill):
+    session = scoped_session(sessionmaker(bind=engine))
+    db_skill = session.query(CharacterSkill).filter_by(character_id=character_id, skill_name=skill).first()
+    db_skill.passed_prev = 0
+    session.commit()
+
+
+async def add_xp(character, xp, channel):
+    char_id = character.id
+    guild = character.guild_id
+
+    session = scoped_session(sessionmaker(bind=engine))
+    result = session.query(Character).filter_by(id=char_id, guild_id=guild).first()
+
+    pre_xp = result.xp
+    pre_level = result.level
+
+    new_xp = result.xp + xp
+    result.xp = new_xp
+
+    xp_tracking = new_xp
+
+    from commands.xp.xp import xp_to_level
+    while True:
+        try:
+            if xp_tracking < 0:
+                break
+
+            if result.level < xp_to_level[xp_tracking]:
+                ##LEVEL UP
+                while result.level < xp_to_level[xp_tracking]:
+                    result.level = result.level + 1
+                    result.free_improvements = result.free_improvements + 2
+
+                level_up_embed = discord.Embed(title=result.character_name + " is now Level " + str(result.level),
+                                               description="You can now upgrade 2 skills for free! Do `?improve <skillname>` to improve it.",
+                                               color=0x00ff00)
+                level_up_embed.set_image(url="https://tenor.com/view/excited-hockey-kid-yeah-gif-10474493")
+                await channel.send(embed=level_up_embed)
+
+            break
+        except KeyError:
+            pass
+
+        xp_tracking = xp_tracking - 1
+
+    session.commit()
+    return pre_xp, new_xp
+
+
+def has_improvement(character):
+    session = scoped_session(sessionmaker(bind=engine))
+
+    result = session.query(Character).filter_by(id=character.id).first()
+    return result.free_improvements > 0
+
+
+def spend_improvement(character):
+    session = scoped_session(sessionmaker(bind=engine))
+
+    result = session.query(Character).filter_by(id=character.id).first()
+    result.free_improvements = result.free_improvements - 1
+
     session.commit()
 
 

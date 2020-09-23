@@ -117,9 +117,18 @@ async def process_command(bot, message):
         await start_game(message)
     elif command == "end":
         await end_game(message)
+    elif command == "xp":
+        from commands.xp.xp import do_xp_roll
+        await do_xp_roll(message)
     elif command == "invite":
         from commands.invite.invite import invite_link
         await invite_link(message, bot)
+    elif command == "mark":
+        from commands.mark.mark import mark_skill_for_character
+        await mark_skill_for_character(message, True)
+    elif command == "unmark":
+        from commands.mark.mark import mark_skill_for_character
+        await mark_skill_for_character(message, False)
     elif command == "clean":
         deleted = await message.channel.purge(check=message_is_to_do_with_bot, limit=50)
         await message.channel.send('Deleted {} message(s)'.format(len(deleted)), delete_after=10)

@@ -94,6 +94,10 @@ async def request_my_improvements(message):
         await improvement_error_message(message.channel, "Cannot find a character for you in this guild.")
         return
 
+    if len(parameters) >= 1:
+        await improve_specific_skill(message)
+        return
+
     if character_has_improvement_request(my_character.id):
         await improvement_error_message(message.channel, "You already have an active improvement request in this guild.")
         return
@@ -117,27 +121,54 @@ async def request_my_improvements(message):
     await approval.add_reaction('🚫')
 
 
-async def do_improvements(channel, character_for):
-    skills = [x for x in get_skills_for_character(character_for.id) if x.passed_prev == 1]
+async def improve_specific_skill(message):
+    message_content = message.content[1:]
+    parameters = message_content.split(" ")[1:]
 
-    embed = discord.Embed(title="Improvement Checks for " + str(character_for.character_name), color=0xff00ff)
+    sender = str(message.author.id)
+    guild = str(message.guild.id)
+
+    skill_check = "".join(parameters)
+    character = get_character_for_owner(sender, guild)
+
+    if has_improvement(character):
+        skill = [x for x in get_skills_for_character(character.id) if x.skill_name.replace(" ", "").lower() == skill_check.replace(" ", "").lower()]
+        spend_improvement(character)
+        await improve_skills(message.channel, character, skill, True)
+    else:
+        await improvement_error_message(message.channel, "You don't have any free improvement rolls left. Level up to get more.")
+
+
+async def improve_skills(channel, character, skills, auto_improve=False):
+    embed = discord.Embed(title="Improvement Check(s) for " + str(character.character_name), color=0xff00ff)
 
     for skill in skills:
         improvement_message = "Current Level: " + str(skill.pass_level) + "\n"
 
-        improvement_check = randrange(1, 100)
-        improvement_message += "Check to Improve: `d100 = " + str(improvement_check) + "`\n"
+        improvement_check = 0
 
-        if improvement_check < skill.pass_level:
+        if not auto_improve:
+            improvement_check = randrange(1, 100)
+            improvement_message += "Check to Improve: `d100 = " + str(improvement_check) + "`\n"
+        else:
+            improvement_message += "Automatically passed improvement check\n"
+
+        if improvement_check < skill.pass_level and not auto_improve:
             improvement_message += "Failed to improve"
-            set_skill(character_for.id, skill.skill_name, skill.pass_level, reset_pass=True)
+            set_skill(character.id, skill.skill_name, skill.pass_level, reset_pass=True)
         else:
             improvement_dice, improvement_result = improve_by(skill.pass_level)
             improvement_message += "Improve by: `" + improvement_dice + " = " + str(improvement_result) + "`\n"
 
-            set_skill(character_for.id, skill.skill_name, skill.pass_level + improvement_result, reset_pass=True)
+            set_skill(character.id, skill.skill_name, skill.pass_level + improvement_result, reset_pass=True)
             improvement_message += "New Level: " + str((skill.pass_level + improvement_result))
 
         embed.add_field(name=skill.skill_name + " Improvement", value=improvement_message)
 
     await channel.send(embed=embed)
+
+
+async def do_improvements(channel, character_for):
+    skills = [x for x in get_skills_for_character(character_for.id) if x.passed_prev == 1]
+
+    await improve_skills(channel, character_for, skills)
