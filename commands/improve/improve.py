@@ -160,7 +160,7 @@ async def improve_skills(channel, character, skills, auto_improve=False):
             improvement_dice, improvement_result = improve_by(skill.pass_level)
             improvement_message += "Improve by: `" + improvement_dice + " = " + str(improvement_result) + "`\n"
 
-            set_skill(character.id, skill.skill_name, skill.pass_level + improvement_result, reset_pass=True)
+            set_skill(character.id, skill.skill_name, skill.pass_level + improvement_result, reset_pass=not auto_improve)
             improvement_message += "New Level: " + str((skill.pass_level + improvement_result))
 
         embed.add_field(name=skill.skill_name + " Improvement", value=improvement_message)
