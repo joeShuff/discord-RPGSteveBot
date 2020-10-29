@@ -31,7 +31,7 @@ async def on_ready():
     try:
         print("on READY")
         await bot.change_presence(status=discord.Status.online,
-                                  activity=discord.Game(name="you"))
+                                  activity=discord.Game(name=" a game with friends <3"))
 
         for guild in bot.guilds:
             create_game_if_not_in_guild(guild)

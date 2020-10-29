@@ -22,7 +22,7 @@ async def me_command(message):
             await me_error_message(message.channel, "Can't find a character for you in this guild!")
             return
 
-        await print_character(message.channel, char, False)
+        await print_character(message.channel, char, True)
     else:
         if len(parameters) == 0:
             await me_error_message(message.channel, "Please enter a slug to get character info for.")
@@ -34,4 +34,4 @@ async def me_command(message):
             await me_error_message(message.channel, "Can't find a character with slug `" + str(parameters[0]) + "` in this guild!")
             return
 
-        await print_character(message.channel, char, False)
+        await print_character(message.channel, char, True)

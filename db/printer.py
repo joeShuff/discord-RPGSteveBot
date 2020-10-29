@@ -43,6 +43,13 @@ async def print_character(channel, character, in_detail=False):
         "**Appearance**: " + str(character.appearance) + " (*" + str(character.get_modifier(character.appearance)) + "*)"
     ]
 
+    all_skills = get_skills_for_character(character.id)
+
+    def to_readable(n):
+        return str(n.skill_name) + " -> `" + str(n.pass_level) + "`"
+
+    all_skills = map(to_readable, all_skills)
+
     health_text = str(character.hitpoints_curr) + "/" + str(character.hitpoints_max)
     stability_text = str(character.stability_curr) + "/" + str(character.stability_max)
     speed_text = str(character.speed)
@@ -55,5 +62,8 @@ async def print_character(channel, character, in_detail=False):
     main_embed.add_field(name="Level & XP", value=xp_text, inline=True)
 
     main_embed.add_field(name="Base Skills", value="\n".join(main_stats_1), inline=False)
+
+    if in_detail:
+        main_embed.add_field(name="Skills", value=" | ".join(all_skills))
 
     await channel.send(embed=main_embed)
