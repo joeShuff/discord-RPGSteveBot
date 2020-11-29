@@ -43,6 +43,11 @@ async def process_command(bot, message):
     channel = message.channel
 
     sender = str(message.author.id)
+
+    if message.guild is None:
+        await message.channel.send("Please don't PM me, I need to be interacted with in a guild")
+        return
+
     guild = str(message.guild.id)
 
     if not message.content.startswith(prefix):
