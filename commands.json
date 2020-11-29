@@ -64,9 +64,9 @@
             "command": "<pref>skill",
             "name": "skill",
             "display_name": "Skills",
-            "syntax": "<pref>skill <skillname> OR <pref>skill create <skillname> <value>",
-            "example": "<pref>skill dodge OR <pref>skill create sewing 35",
-            "description": "This command can be used to view skill information or create a new skill for your character",
+            "syntax": "<pref>skill create <slug> <skillname> <value>",
+            "example": "<pref>skill create balrock sewing 35",
+            "description": "This command can be used to create a new skill for your character (creation is for GMs only)",
             "long_description": "",
             "parameters": [
                 {
@@ -78,9 +78,14 @@
                     "name": "value",
                     "description": "The value to set the skill to",
                     "values": []
+                },
+                {
+                    "name": "slug",
+                    "description": "A player slug to create this skill for",
+                    "values": []
                 }
             ],
-            "category": "character"
+            "category": "gm_controls"
         },
         {
             "command": "<pref>set",

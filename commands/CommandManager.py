@@ -1,5 +1,5 @@
-from commands.help.help import send_help
 from commands.create.create import *
+from commands.help.help import send_help
 from commands.set.set import *
 from commands.start_end.start_end import *
 
@@ -76,10 +76,9 @@ async def process_command(bot, message):
         from commands.set.set import run_set
         await run_set(message)
     elif command == "skill":
-        from commands.skill.skill import print_skill_info, create_new_skill
-        if len(parameters) == 1:
-            await print_skill_info(message, parameters[0])
-        elif len(parameters) == 3:
+        from commands.skill.skill import create_new_skill
+
+        if parameters[0] == "create":
             await create_new_skill(message)
         else:
             await message.channel.send("Unknown syntax. Please do `<pref>help skill` to learn more".replace("<pref>", prefix))
