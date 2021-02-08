@@ -85,7 +85,7 @@ async def skill_check_for_character(message, character, skill_search, adv=False,
     if chosen_roll <= chosen_stat_pass_value and checkable_skill and is_game_active:
         mark_skill_as_passed(character.id, chosen_stat_name)
 
-    if chosen_roll < math.floor(chosen_stat_pass_value / 4):
+    if float(chosen_roll) <= chosen_stat_pass_value / 4.0:
         result_message += "ACE :white_check_mark:"
     elif chosen_roll <= chosen_stat_pass_value:
         result_message += "PASS :white_check_mark:"
