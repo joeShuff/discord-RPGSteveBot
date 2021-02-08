@@ -133,6 +133,11 @@ async def improve_specific_skill(message):
 
     if has_improvement(character):
         skill = [x for x in get_skills_for_character(character.id) if x.skill_name.replace(" ", "").lower() == skill_check.replace(" ", "").lower()]
+
+        if len(skill) == 0:
+            await improvement_error_message(message.channel, "Can't seem to find a skill by the name `" + skill_check + "`")
+            return
+
         spend_improvement(character)
         await improve_skills(message.channel, character, skill, True)
     else:
