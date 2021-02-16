@@ -133,6 +133,9 @@ async def process_command(bot, message):
     elif command == "unmark":
         from commands.mark.mark import mark_skill_for_character
         await mark_skill_for_character(message, False)
+    elif command == "newday":
+        from commands.stability.reset_day import do_day_reset
+        await do_day_reset(message)
     elif command == "clean":
         deleted = await message.channel.purge(check=message_is_to_do_with_bot, limit=50)
         await message.channel.send('Deleted {} message(s)'.format(len(deleted)), delete_after=10)

@@ -10,11 +10,13 @@ import time
 
 import json
 import os
+
 cwd = os.getcwd()
 
 Base = declarative_base()
 engine = None
 session = None
+
 
 class GuildGame(Base):
     __tablename__ = 'guild_game'
@@ -51,6 +53,9 @@ class Character(Base):
     hitpoints_curr = Column(Integer, default=20)
     stability_max = Column(Integer, default=80)
     stability_curr = Column(Integer, default=80)
+    start_of_day_stability = Column(Integer, default=80)
+    unstable = Column(Integer, default=0)
+    insane = Column(Integer, default=0)
     free_improvements = Column(Integer, default=0)
     speed = Column(Integer, default=60)
 
@@ -104,6 +109,7 @@ class CharacterInitiative(Base):
     character_id = Column(Integer)
     init_result = Column(String(255))
     roll_result = Column(Integer)
+
 
 engine = create_engine('sqlite:///steve_bot_storage.db')
 Base.metadata.create_all(engine)
@@ -176,6 +182,7 @@ def remove_character_improvement_requests(character_id):
     session = scoped_session(sessionmaker(bind=engine))
     res = session.query(CharacterImprovementRequest).filter_by(character_id=character_id).delete()
     session.commit()
+
 
 ###########################################
 ###         INITIATIVE CONTROLS        ####
@@ -361,7 +368,6 @@ async def add_xp(character, xp, channel):
                                                description="You can now upgrade 2 skills for free! Do `?improve <skillname>` to improve it.",
                                                color=0x00ff00)
                 await channel.send(embed=level_up_embed)
-                await channel.send("https://youtu.be/zS1cLOIxsQ8?t=17")
 
             break
         except KeyError:
@@ -371,6 +377,50 @@ async def add_xp(character, xp, channel):
 
     session.commit()
     return pre_xp, new_xp
+
+
+def reset_day_stability(character):
+    char_id = character.id
+    guild = character.guild_id
+
+    session = scoped_session(sessionmaker(bind=engine))
+    result = session.query(Character).filter_by(id=char_id, guild_id=guild).first()
+
+    result.start_of_day_stability = result.stability_curr
+
+    session.commit()
+
+
+def set_unstable(character, unstable=True):
+    char_id = character.id
+    guild = character.guild_id
+
+    session = scoped_session(sessionmaker(bind=engine))
+    result = session.query(Character).filter_by(id=char_id, guild_id=guild).first()
+
+    if unstable:
+        result.unstable = 1
+        result.insane = 0
+    else:
+        result.unstable = 0
+
+    session.commit()
+
+
+def set_insanity(character, insane=True):
+    char_id = character.id
+    guild = character.guild_id
+
+    session = scoped_session(sessionmaker(bind=engine))
+    result = session.query(Character).filter_by(id=char_id, guild_id=guild).first()
+
+    if insane:
+        result.insane = 1
+        result.unstable = 0
+    else:
+        result.insane = 0
+
+    session.commit()
 
 
 def has_improvement(character):
@@ -419,6 +469,8 @@ def get_skill(character_id, skill_name):
 owner - The discord user id that you want to fetch the user for, as a String
 guild - The id of the guild running on
 '''
+
+
 def get_character_for_owner(owner, guild):
     session = scoped_session(sessionmaker(bind=engine))
 

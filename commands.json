@@ -342,6 +342,17 @@
             "category": "gm_controls"
         },
         {
+            "command": "<pref>newday",
+            "name": "newday",
+            "display_name": "Start a new Day",
+            "syntax": "<pref>newday",
+            "example": "<pref>newday",
+            "description": "Starts a new stability day, resetting stability levels for tracking instability.",
+            "long_description": "",
+            "parameters": [],
+            "category": "gm_controls"
+        },
+        {
             "command": "<pref>clean",
             "name": "clean",
             "display_name": "Clean",
