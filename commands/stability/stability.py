@@ -7,13 +7,23 @@ async def stability_error_message(channel, message):
     await channel.send(message)
 
 
-async def notify_unstable(channel, character):
-    embed = discord.Embed(title=character.character_name + " became unstable!", color=0xff0000)
+async def notify_unstable(channel, character, unstable=True):
+    message = character.character_name + " became unstable!"
+
+    if not unstable:
+        message = character.character_name + " became stable again!"
+
+    embed = discord.Embed(title=message, color=0xff0000)
     await channel.send(embed=embed)
 
 
-async def notify_insane(channel, character):
-    embed = discord.Embed(title=character.character_name + " went insane!", color=0xff0000)
+async def notify_insane(channel, character, insane=True):
+    message = character.character_name + " went insane!"
+
+    if not insane:
+        message = character.character_name + " is sane again! (for now)"
+
+    embed = discord.Embed(title=message, color=0xff0000)
     await channel.send(embed=embed)
 
 
@@ -123,3 +133,68 @@ async def do_stability_check(message):
                 await stability_error_message(message.channel, "You don't have a character in this guild")
             else:
                 await do_stability_check_for_character(message, character, roll)
+
+
+async def manual_set_unstable(message):
+    has_gm = next((x for x in message.author.roles if x.name == "GameMaster"), None) is not None
+    message_content = message.content[1:]
+    parameters = message_content.split(" ")[1:]
+
+    is_game_active = is_game_active_for_guild(str(message.guild.id))
+
+    sender = str(message.author.id)
+    guild = str(message.guild.id)
+
+    if not has_gm:
+        await stability_error_message(message.channel, "This command is for GMs only")
+        return
+    else:
+        if len(parameters) < 2:
+            await stability_error_message(message.channel, "Please include a character to target and whether to set unstable or not, as you are a GM.")
+            return
+        else:
+            character = get_character_for_slug(parameters[0], guild)
+
+            setter = "".join(parameters[1:])
+
+            if character is None:
+                await stability_error_message(message.channel, "Can't find a character with slug `" + parameters[0] + "` in this guild.")
+            else:
+                try:
+                    bool_unstable = setter.lower().strip() == "true"
+                    set_unstable(character, bool_unstable)
+                    await notify_unstable(message.channel, character, bool_unstable)
+                except:
+                    await stability_error_message(message.channel, "Please either type `true` or `false` to set unstability")
+
+
+async def manual_set_insane(message):
+    has_gm = next((x for x in message.author.roles if x.name == "GameMaster"), None) is not None
+    message_content = message.content[1:]
+    parameters = message_content.split(" ")[1:]
+
+    sender = str(message.author.id)
+    guild = str(message.guild.id)
+
+    if not has_gm:
+        await stability_error_message(message.channel, "This command is for GMs only")
+        return
+    else:
+        if len(parameters) < 2:
+            await stability_error_message(message.channel, "Please include a character to target and whether to set insane or not, as you are a GM.")
+            return
+        else:
+            character = get_character_for_slug(parameters[0], guild)
+
+            setter = "".join(parameters[1:])
+
+            if character is None:
+                await stability_error_message(message.channel, "Can't find a character with slug `" + parameters[0] + "` in this guild.")
+            else:
+                try:
+                    bool_insane = setter.lower().strip() == "true"
+                    set_insanity(character, bool_insane)
+                    await notify_insane(message.channel, character, bool_insane)
+                except Exception as e:
+                    print(e)
+                    await stability_error_message(message.channel, "Please either type `true` or `false` to set insanity")

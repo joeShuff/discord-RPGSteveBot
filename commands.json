@@ -29,6 +29,11 @@
             "name": "game_admin",
             "display_name": ":computer: Game Admin",
             "order": 5
+        },
+        {
+            "name": "char_control",
+            "display_name": ":person_curly_hair: Character Control",
+            "order": 6
         }
     ],
     "commands":[
@@ -317,7 +322,7 @@
                     "values": []
                 }
             ],
-            "category": "gm_controls"
+            "category": "char_control"
         },
         {
             "command": "<pref>unmark",
@@ -339,7 +344,7 @@
                     "values": []
                 }
             ],
-            "category": "gm_controls"
+            "category": "char_control"
         },
         {
             "command": "<pref>newday",
@@ -351,6 +356,28 @@
             "long_description": "",
             "parameters": [],
             "category": "gm_controls"
+        },
+        {
+            "command": "<pref>insane",
+            "name": "insane",
+            "display_name": "Set insanity for a character",
+            "syntax": "<pref>insane <character> <insane>",
+            "example": "<pref>insane bobby true",
+            "description": "Sets insanity for a character of your choice manually",
+            "long_description": "",
+            "parameters": [],
+            "category": "char_control"
+        },
+        {
+            "command": "<pref>unstable",
+            "name": "unstable",
+            "display_name": "Set unstability for a character",
+            "syntax": "<pref>unstable <character> <unstable>",
+            "example": "<pref>unstable bobby true",
+            "description": "Sets unstability for a character of your choice manually",
+            "long_description": "",
+            "parameters": [],
+            "category": "char_control"
         },
         {
             "command": "<pref>clean",
