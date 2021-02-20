@@ -52,6 +52,12 @@ async def print_character(channel, character, in_detail=False):
 
     health_text = str(character.hitpoints_curr) + "/" + str(character.hitpoints_max)
     stability_text = str(character.stability_curr) + "/" + str(character.stability_max)
+
+    if character.insane == 1:
+        stability_text += " **INSANE**"
+    elif character.unstable == 1:
+        stability_text += " **UNSTABLE**"
+
     speed_text = str(character.speed)
     xp_text = "Level " + str(character.level) + " (" + str(character.xp) + " XP)"
 
