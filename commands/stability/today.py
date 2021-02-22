@@ -21,6 +21,9 @@ async def do_today_command(message):
     today_stats = []
 
     for character in characters:
+        if character.start_of_day_stability is None or character.stability_curr is None:
+            continue
+
         damage_today = abs(character.start_of_day_stability - character.stability_curr)
         percentage_stab_lost_today = (float(damage_today) / float(character.start_of_day_stability) * 100.0)
 
