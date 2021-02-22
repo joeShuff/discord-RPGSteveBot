@@ -53,8 +53,11 @@ async def on_guild_join(guild):
         create_game_if_not_in_guild(guild)
         await create_permissions(guild)
     except Exception as e:
-        from git.github_connection import report_error_to_repo
-        report_error_to_repo(bot, e)
+        if TEST_BOT:
+            raise e
+        else:
+            from git.github_connection import report_error_to_repo
+            report_error_to_repo(bot, e)
 
 
 @bot.event
@@ -70,14 +73,17 @@ async def on_message(message):
 
         await process_command(bot, message)
     except Exception as e:
-        from git.github_connection import report_error_to_repo
-        issue = report_error_to_repo(bot, e)
+        if TEST_BOT:
+            raise e
+        else:
+            from git.github_connection import report_error_to_repo
+            issue = report_error_to_repo(bot, e)
 
-        if issue is not None:
-            embed = discord.Embed(title="Error", color=0xff0000, description=
-                                  "Something went wrong, issue reported to github [here](" + issue.html_url + ")")
+            if issue is not None:
+                embed = discord.Embed(title="Error", color=0xff0000, description=
+                                      "Something went wrong, issue reported to github [here](" + issue.html_url + ")")
 
-            await message.channel.send(embed=embed)
+                await message.channel.send(embed=embed)
 
 
 @bot.event
@@ -93,8 +99,11 @@ async def on_raw_reaction_add(payload):
         from commands.improve.improve import check_improvements_from_reaction
         await check_improvements_from_reaction(payload.emoji, user, message)
     except Exception as e:
-        from git.github_connection import report_error_to_repo
-        report_error_to_repo(bot, e)
+        if TEST_BOT:
+            raise e
+        else:
+            from git.github_connection import report_error_to_repo
+            report_error_to_repo(bot, e)
 
 
 token = ""
