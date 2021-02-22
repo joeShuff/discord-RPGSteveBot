@@ -8,6 +8,7 @@ from db.db_controller import create_game_if_not_in_guild
 cwd = os.getcwd()
 bot = Bot(":")
 
+TEST_BOT = True
 
 async def create_permissions(guild):
     try:
@@ -38,8 +39,11 @@ async def on_ready():
             await create_permissions(guild)
 
     except Exception as e:
-        from git.github_connection import report_error_to_repo
-        report_error_to_repo(bot, e)
+        if TEST_BOT:
+            raise e
+        else:
+            from git.github_connection import report_error_to_repo
+            report_error_to_repo(bot, e)
 
 
 @bot.event
@@ -94,8 +98,12 @@ async def on_raw_reaction_add(payload):
 
 
 token = ""
-# with open(cwd + '/token.txt', 'r') as myfile:
-with open(cwd + '/test_bot_token.txt', 'r') as myfile:
+token_file = "/token.txt"
+
+if TEST_BOT:
+    token_file = "/test_bot_token.txt"
+
+with open(cwd + token_file, 'r') as myfile:
     token = myfile.read().replace('\n', '')
 
 # client.loop.create_task(Poll.update_polls(client))
