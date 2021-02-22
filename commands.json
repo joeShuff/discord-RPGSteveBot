@@ -358,6 +358,17 @@
             "category": "gm_controls"
         },
         {
+            "command": "<pref>today",
+            "name": "today",
+            "display_name": "Today",
+            "syntax": "<pref>today",
+            "example": "<pref>today",
+            "description": "Check characters stability today",
+            "long_description": "",
+            "parameters": [],
+            "category": "gameplay"
+        },
+        {
             "command": "<pref>insane",
             "name": "insane",
             "display_name": "Set insanity for a character",

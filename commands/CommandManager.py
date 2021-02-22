@@ -139,6 +139,9 @@ async def process_command(bot, message):
     elif command == "newday":
         from commands.stability.reset_day import do_day_reset
         await do_day_reset(message)
+    elif command == "today":
+        from commands.stability.today import do_today_command
+        await do_today_command(message)
     elif command == "insane":
         from commands.stability.stability import manual_set_insane
         await manual_set_insane(message)
