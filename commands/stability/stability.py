@@ -59,6 +59,8 @@ async def do_stability_check_for_character(message, character, roll_string):
 
     if not passed_stability:
         set_character_stability(character, new_stability)
+    else:
+        new_stability = character.stability_curr
 
     embed = discord.Embed(title=character.character_name + "'s Stability Check",
                           color=result_color)
@@ -83,10 +85,10 @@ async def do_stability_check_for_character(message, character, roll_string):
 
     await message.channel.send(embed=embed)
 
-    if character.unstable == 0 and 15.0 <= percentage_stab_lost_today < 30.0:
+    if character.unstable == 0 and (15.0 <= percentage_stab_lost_today < 30.0):
         set_unstable(character, True)
         await notify_unstable(message.channel, character)
-    elif character.insane == 0 and percentage_stab_lost_today >= 30.0:
+    elif character.insane == 0 and (percentage_stab_lost_today >= 30.0):
         set_insanity(character, True)
         await notify_insane(message.channel, character)
 
