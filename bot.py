@@ -8,6 +8,7 @@ from db.db_controller import create_game_if_not_in_guild
 cwd = os.getcwd()
 bot = Bot(":")
 
+TEST_BOT = True
 
 async def create_permissions(guild):
     try:
@@ -31,15 +32,18 @@ async def on_ready():
     try:
         print("on READY")
         await bot.change_presence(status=discord.Status.online,
-                                  activity=discord.Game(name=" a game with friends <3"))
+                                  activity=discord.Game(name=" Minecraft RPG"))
 
         for guild in bot.guilds:
             create_game_if_not_in_guild(guild)
             await create_permissions(guild)
 
     except Exception as e:
-        from git.github_connection import report_error_to_repo
-        report_error_to_repo(bot, e)
+        if TEST_BOT:
+            raise e
+        else:
+            from git.github_connection import report_error_to_repo
+            report_error_to_repo(bot, e)
 
 
 @bot.event
@@ -49,8 +53,11 @@ async def on_guild_join(guild):
         create_game_if_not_in_guild(guild)
         await create_permissions(guild)
     except Exception as e:
-        from git.github_connection import report_error_to_repo
-        report_error_to_repo(bot, e)
+        if TEST_BOT:
+            raise e
+        else:
+            from git.github_connection import report_error_to_repo
+            report_error_to_repo(bot, e)
 
 
 @bot.event
@@ -66,14 +73,17 @@ async def on_message(message):
 
         await process_command(bot, message)
     except Exception as e:
-        from git.github_connection import report_error_to_repo
-        issue = report_error_to_repo(bot, e)
+        if TEST_BOT:
+            raise e
+        else:
+            from git.github_connection import report_error_to_repo
+            issue = report_error_to_repo(bot, e)
 
-        if issue is not None:
-            embed = discord.Embed(title="Error", color=0xff0000, description=
-                                  "Something went wrong, issue reported to github [here](" + issue.html_url + ")")
+            if issue is not None:
+                embed = discord.Embed(title="Error", color=0xff0000, description=
+                                      "Something went wrong, issue reported to github [here](" + issue.html_url + ")")
 
-            await message.channel.send(embed=embed)
+                await message.channel.send(embed=embed)
 
 
 @bot.event
@@ -89,13 +99,20 @@ async def on_raw_reaction_add(payload):
         from commands.improve.improve import check_improvements_from_reaction
         await check_improvements_from_reaction(payload.emoji, user, message)
     except Exception as e:
-        from git.github_connection import report_error_to_repo
-        report_error_to_repo(bot, e)
+        if TEST_BOT:
+            raise e
+        else:
+            from git.github_connection import report_error_to_repo
+            report_error_to_repo(bot, e)
 
 
 token = ""
-# with open(cwd + '/token.txt', 'r') as myfile:
-with open(cwd + '/test_bot_token.txt', 'r') as myfile:
+token_file = "/token.txt"
+
+if TEST_BOT:
+    token_file = "/test_bot_token.txt"
+
+with open(cwd + token_file, 'r') as myfile:
     token = myfile.read().replace('\n', '')
 
 # client.loop.create_task(Poll.update_polls(client))

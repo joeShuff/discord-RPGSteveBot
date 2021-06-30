@@ -2,7 +2,7 @@ from db.db_controller import *
 from random import randrange
 import discord
 
-def myFunc(e):
+def diceRollResult(e):
   return e.roll_result
 
 async def send_initiative_error_message(channel, message):
@@ -12,7 +12,7 @@ async def send_initiative_error_message(channel, message):
 def get_initiative_embed_for_guild(guild, override_end=False, title_override=None):
     roll_result_text = ""
     initiative_results = get_initiative_results_for_guild(guild)
-    initiative_results.sort(key=myFunc, reverse=True)
+    initiative_results.sort(key=diceRollResult, reverse=True)
 
     initiative_title = get_initiative_title_for_guild(guild)
 

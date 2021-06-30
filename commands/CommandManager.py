@@ -116,7 +116,10 @@ async def process_command(bot, message):
         from commands.activation.activation import deactivate_character
         await deactivate_character(message)
     elif command == "help":
-        await send_help(bot, message)
+        try:
+            await send_help(bot, message)
+        except Exception as e:
+            await message.channel.send("Ironically there was a problem sending help, please notify the dev \n```" + str(e) + "```")
     elif command == "start":
         await start_game(message)
     elif command == "end":
@@ -133,6 +136,18 @@ async def process_command(bot, message):
     elif command == "unmark":
         from commands.mark.mark import mark_skill_for_character
         await mark_skill_for_character(message, False)
+    elif command == "newday":
+        from commands.stability.reset_day import do_day_reset
+        await do_day_reset(message)
+    elif command == "today":
+        from commands.stability.today import do_today_command
+        await do_today_command(message)
+    elif command == "insane":
+        from commands.stability.stability import manual_set_insane
+        await manual_set_insane(message)
+    elif command == "unstable":
+        from commands.stability.stability import manual_set_unstable
+        await manual_set_unstable(message)
     elif command == "clean":
         deleted = await message.channel.purge(check=message_is_to_do_with_bot, limit=50)
         await message.channel.send('Deleted {} message(s)'.format(len(deleted)), delete_after=10)
