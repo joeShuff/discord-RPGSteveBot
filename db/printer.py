@@ -18,7 +18,7 @@ async def print_character_created_at(channel, created_at):
     await print_character(channel, char)
 
 
-async def print_character(channel, character, in_detail=False):
+async def print_character(context, character, in_detail=False):
     main_embed = discord.Embed(
         color=0xff0000,
         title=character.character_name + " (" + character.character_slug + ")"
@@ -72,4 +72,4 @@ async def print_character(channel, character, in_detail=False):
     if in_detail:
         main_embed.add_field(name="Skills", value=" | ".join(all_skills))
 
-    await channel.send(embed=main_embed)
+    await context.send(embed=main_embed)
