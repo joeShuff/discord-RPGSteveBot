@@ -111,7 +111,7 @@ class CharacterInitiative(Base):
     roll_result = Column(Integer)
 
 
-engine = create_engine('sqlite:///steve_bot_storage.db')
+engine = create_engine('sqlite:///config/steve_bot_storage.db')
 Base.metadata.create_all(engine)
 Base.metadata.bind = engine
 session = scoped_session(sessionmaker(bind=engine))
