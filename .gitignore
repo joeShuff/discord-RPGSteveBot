@@ -140,4 +140,4 @@ dealbot_config.db
 
 git/git_access_token.txt
 
-steve_bot_storage.db
+config/steve_bot_storage.db
