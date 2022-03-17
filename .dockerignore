@@ -1,0 +1,10 @@
+commands/__pycache__
+art
+git
+.gitignore
+steve_bot_storage.db
+README.md
+LICENSE
+token.txt
+test_bot_token.txt
+_config.yml
